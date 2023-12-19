@@ -7,20 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D802A792B2B692C00920DDB /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D802A782B2B692C00920DDB /* LocationSearchService.swift */; };
+		9D9673612B1DCBE200DF3CE9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */; };
 		9DB76FB82B0768FF00605B57 /* DondeGasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FB72B0768FF00605B57 /* DondeGasApp.swift */; };
-		9DB76FBA2B0768FF00605B57 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FB92B0768FF00605B57 /* ContentView.swift */; };
 		9DB76FBC2B0768FF00605B57 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FBB2B0768FF00605B57 /* Item.swift */; };
 		9DB76FBE2B07690100605B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DB76FBD2B07690100605B57 /* Assets.xcassets */; };
 		9DB76FC12B07690100605B57 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DB76FC02B07690100605B57 /* Preview Assets.xcassets */; };
+		9DB76FCB2B076DA500605B57 /* DondeGasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FCA2B076DA500605B57 /* DondeGasViewModel.swift */; };
+		9DB76FCD2B07729E00605B57 /* GasStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FCC2B07729E00605B57 /* GasStation.swift */; };
+		9DEF01752B160527009B4D71 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEF01742B160527009B4D71 /* ColorPalette.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9D802A782B2B692C00920DDB /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
+		9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9DB76FB42B0768FF00605B57 /* DondeGas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DondeGas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DB76FB72B0768FF00605B57 /* DondeGasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DondeGasApp.swift; sourceTree = "<group>"; };
-		9DB76FB92B0768FF00605B57 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9DB76FBB2B0768FF00605B57 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9DB76FBD2B07690100605B57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DB76FC02B07690100605B57 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9DB76FCA2B076DA500605B57 /* DondeGasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DondeGasViewModel.swift; sourceTree = "<group>"; };
+		9DB76FCC2B07729E00605B57 /* GasStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasStation.swift; sourceTree = "<group>"; };
+		9DEF01742B160527009B4D71 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,11 +61,16 @@
 		9DB76FB62B0768FF00605B57 /* DondeGas */ = {
 			isa = PBXGroup;
 			children = (
+				9DB76FC92B076D0F00605B57 /* viewmodel */,
+				9DB76FC82B076D0800605B57 /* view */,
+				9DB76FC72B076CFD00605B57 /* model */,
 				9DB76FB72B0768FF00605B57 /* DondeGasApp.swift */,
-				9DB76FB92B0768FF00605B57 /* ContentView.swift */,
 				9DB76FBB2B0768FF00605B57 /* Item.swift */,
 				9DB76FBD2B07690100605B57 /* Assets.xcassets */,
 				9DB76FBF2B07690100605B57 /* Preview Content */,
+				9DEF01742B160527009B4D71 /* ColorPalette.swift */,
+				9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */,
+				9D802A782B2B692C00920DDB /* LocationSearchService.swift */,
 			);
 			path = DondeGas;
 			sourceTree = "<group>";
@@ -68,6 +81,29 @@
 				9DB76FC02B07690100605B57 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9DB76FC72B076CFD00605B57 /* model */ = {
+			isa = PBXGroup;
+			children = (
+				9DB76FCC2B07729E00605B57 /* GasStation.swift */,
+			);
+			path = model;
+			sourceTree = "<group>";
+		};
+		9DB76FC82B076D0800605B57 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				9DB76FCA2B076DA500605B57 /* DondeGasViewModel.swift */,
+			);
+			path = view;
+			sourceTree = "<group>";
+		};
+		9DB76FC92B076D0F00605B57 /* viewmodel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = viewmodel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,9 +176,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DB76FBA2B0768FF00605B57 /* ContentView.swift in Sources */,
+				9D802A792B2B692C00920DDB /* LocationSearchService.swift in Sources */,
+				9DEF01752B160527009B4D71 /* ColorPalette.swift in Sources */,
 				9DB76FBC2B0768FF00605B57 /* Item.swift in Sources */,
+				9D9673612B1DCBE200DF3CE9 /* LocationManager.swift in Sources */,
 				9DB76FB82B0768FF00605B57 /* DondeGasApp.swift in Sources */,
+				9DB76FCD2B07729E00605B57 /* GasStation.swift in Sources */,
+				9DB76FCB2B076DA500605B57 /* DondeGasViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +318,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DondeGas/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos tu ubicación para ofrecerte las estaciones de servicio más próximas.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -306,6 +347,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DondeGas/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos tu ubicación para ofrecerte las estaciones de servicio más próximas.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
