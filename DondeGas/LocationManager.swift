@@ -83,8 +83,6 @@ extension LocationManager: CLLocationManagerDelegate {
         let decimalCorrection = String(format: "%.2f", kmDistance)
         let result = Double(decimalCorrection.prefix(4)) ?? 0.00
         
-        print("Entre \(stationLocation) y \(currentUserLocation) hay \(result) km")
-        
         return result
     }
     
@@ -149,7 +147,7 @@ extension LocationManager: CLLocationManagerDelegate {
             DispatchQueue.main.async {
                 withAnimation(.easeInOut(duration: 2.5)) {
                     self.userLocation = MKCoordinateRegion(
-                        center: coordinate,
+                        center: .init(latitude: coordinate.latitude - 0.006, longitude: coordinate.longitude),
                         span: .init(latitudeDelta: 0.02, longitudeDelta: 0.02)
                     )
                     self.focusOnUser()
@@ -182,7 +180,6 @@ extension LocationManager: CLLocationManagerDelegate {
                 return
             }
 
-            // Coordenadas encontradas
             completion(coordinate)
         }
     }

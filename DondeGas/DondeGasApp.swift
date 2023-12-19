@@ -183,7 +183,6 @@ struct FuelMenuCardView: View {
                                     .bold()
                                 Spacer()
                                 Image(systemName: "fuelpump.fill")
-                                    //.foregroundStyle(viewModel.getFuelTypeColor(fuelType: fuelType))
                             }
                             .padding(.horizontal, 35)
                             .padding(.vertical, 12)
@@ -221,6 +220,15 @@ struct LocationMenuCardView: View {
             }
             .pickerStyle(.segmented)
             .padding()
+            .onChange(of: viewModel.usingCustomLocation) {
+                if !viewModel.usingCustomLocation {
+                    locationManager.setRealUserLocation()
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    viewModel.filterGasStations()
+                }
+            }
             
             Spacer()
             if viewModel.usingCustomLocation {
@@ -388,103 +396,122 @@ struct SlidingCardView: View {
                     
                 }
                 Spacer()
-                ScrollViewReader { scrollView in
-                    List(viewModel.gasStations) { station in
-                        Button(action: {
-                            if viewModel.expandedItem == station.id {
-                                viewModel.expandedItem = ""
-                                locationManager.focusOnUser()
-                            } else {
-                                viewModel.expandedItem = station.id
-                                locationManager.setLocation(latitude: station.latitude, longitude: station.longitude)
-                            }
-                        }) {
-                            Spacer()
-                            if viewModel.expandedItem == station.id {
-                                HStack {
-                                    VStack (alignment: .leading) {
-                                        HStack {
-                                            Text(station.name)
-                                                .font(.system(size: 14, weight: .bold))
-                                                .multilineTextAlignment(.leading)
-                                            Text((station.prices[viewModel.selectedFuelType] ?? "0.000") ?? "0.000")
-                                                .font(.footnote)
-                                                .foregroundStyle(viewModel.getColorCode(gasStation: station.id))
-                                        }
-                                        Text("A \(String(format:"%.2f" , locationManager.distanceToGasStation(station: station))) km.")
-                                            .font(.subheadline)
-                                            .multilineTextAlignment(.leading)
-                                        Spacer()
-                                        Button(action: {
-                                            if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
-                                                let coordinate = CLLocationCoordinate2DMake(stationLatitude, stationLongitude)
-                                                let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
-                                                mapItem.name = "Abrir en Maps"
-                                                mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
-                                            }
-                                        }) {
+                
+                if viewModel.gasStations.isEmpty {
+                    VStack {
+                        Text("No se han encontrado estaciones a \(viewModel.reachLimit) \(viewModel.reachLimit > 1 ? "kms" : "km") de aquí")
+                            .font(.system(size: 22, weight: .semibold))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 40)
+                            .padding(.top, 20)
+                    
+                        Text("Prueba a aumentar el radio de búsqueda en el menú de ubicación")
+                            .font(.system(size: 16, weight: .regular))
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 40)
+                            .padding(.bottom, 20)
+                            .padding(.top, 3)
+                        Spacer()
+                    }
+                } else {
+                    ScrollViewReader { scrollView in
+                        List(viewModel.gasStations) { station in
+                            Button(action: {
+                                if viewModel.expandedItem == station.id {
+                                    viewModel.expandedItem = ""
+                                    locationManager.focusOnUser()
+                                } else {
+                                    viewModel.expandedItem = station.id
+                                    locationManager.setLocation(latitude: station.latitude, longitude: station.longitude)
+                                }
+                            }) {
+                                Spacer()
+                                if viewModel.expandedItem == station.id {
+                                    HStack {
+                                        VStack (alignment: .leading) {
                                             HStack {
-                                                Image(systemName: "car.fill")
-                                                Text("Ruta hasta allí")
+                                                Text(station.name)
+                                                    .font(.system(size: 14, weight: .bold))
+                                                    .multilineTextAlignment(.leading)
+                                                Text((station.prices[viewModel.selectedFuelType] ?? "0.000") ?? "0.000")
+                                                    .font(.footnote)
+                                                    .foregroundStyle(viewModel.getColorCode(gasStation: station.id))
                                             }
-                                        }
-                                        .foregroundStyle(Color.blue)
-                                        .cornerRadius(10)
-                                    }.gridColumnAlignment(.leading)
-                                    Spacer()
-                                    VStack {
-                                        HStack {
+                                            Text("A \(String(format:"%.2f" , locationManager.distanceToGasStation(station: station))) km.")
+                                                .font(.subheadline)
+                                                .multilineTextAlignment(.leading)
                                             Spacer()
+                                            Button(action: {
+                                                if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
+                                                    let coordinate = CLLocationCoordinate2DMake(stationLatitude, stationLongitude)
+                                                    let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
+                                                    mapItem.name = "Abrir en Maps"
+                                                    mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+                                                }
+                                            }) {
+                                                HStack {
+                                                    Image(systemName: "car.fill")
+                                                    Text("Ruta hasta allí")
+                                                }
+                                            }
+                                            .foregroundStyle(Color.blue)
+                                            .cornerRadius(10)
+                                        }.gridColumnAlignment(.leading)
+                                        Spacer()
+                                        VStack {
+                                            HStack {
+                                                Spacer()
+                                                Text(viewModel.getOpenStatus(scheduleString: station.schedule))
+                                                    .font(.callout)
+                                                    .foregroundStyle(viewModel.getOpenStatus(scheduleString: station.schedule).hasPrefix("Abierto") ? .green : .red)
+                                                    .multilineTextAlignment(.trailing)
+                                                    .padding(.bottom, 5)
+                                            }
+                                            HStack {
+                                                Spacer()
+                                                Text(viewModel.getSchedule(scheduleString: station.schedule))
+                                                    .font(.footnote)
+                                                    .multilineTextAlignment(.trailing)
+                                            }
+                                        }.frame(maxWidth: .infinity, alignment: .trailing)
+                                    }
+                                } else {
+                                    HStack {
+                                        VStack (alignment: .leading) {
+                                            HStack {
+                                                Text(station.name)
+                                                    .font(.system(size: 14, weight: .bold))
+                                                    .multilineTextAlignment(.leading)
+                                                Text((station.prices[viewModel.selectedFuelType] ?? "0.000") ?? "0.000")
+                                                    .font(.footnote)
+                                                    .foregroundStyle(viewModel.getColorCode(gasStation: station.id))
+                                            }
+                                            Text("A \(String(format:"%.2f" , locationManager.distanceToGasStation(station: station))) km.")
+                                                .font(.subheadline)
+                                                .multilineTextAlignment(.leading)
+                                        }.gridColumnAlignment(.leading)
+                                        Spacer()
+                                        VStack {
                                             Text(viewModel.getOpenStatus(scheduleString: station.schedule))
                                                 .font(.callout)
+                                                .multilineTextAlignment(.trailing)
                                                 .foregroundStyle(viewModel.getOpenStatus(scheduleString: station.schedule).hasPrefix("Abierto") ? .green : .red)
-                                                .multilineTextAlignment(.trailing)
-                                                .padding(.bottom, 5)
-                                        }
-                                        HStack {
-                                            Spacer()
-                                            Text(viewModel.getSchedule(scheduleString: station.schedule))
-                                                .font(.footnote)
-                                                .multilineTextAlignment(.trailing)
-                                        }
-                                    }.frame(maxWidth: .infinity, alignment: .trailing)
+                                        }.frame(maxWidth: .infinity, alignment: .trailing)
+                                    }
+                                    .contentShape(Rectangle()) // Esto hace que todo el HStack sea "clickable"
+                                    .background(Color.clear)
                                 }
-                            } else {
-                                HStack {
-                                    VStack (alignment: .leading) {
-                                        HStack {
-                                            Text(station.name)
-                                                .font(.system(size: 14, weight: .bold))
-                                                .multilineTextAlignment(.leading)
-                                            Text((station.prices[viewModel.selectedFuelType] ?? "0.000") ?? "0.000")
-                                                .font(.footnote)
-                                                .foregroundStyle(viewModel.getColorCode(gasStation: station.id))
-                                        }
-                                        Text("A \(String(format:"%.2f" , locationManager.distanceToGasStation(station: station))) km.")
-                                            .font(.subheadline)
-                                            .multilineTextAlignment(.leading)
-                                    }.gridColumnAlignment(.leading)
-                                    Spacer()
-                                    VStack {
-                                        Text(viewModel.getOpenStatus(scheduleString: station.schedule))
-                                            .font(.callout)
-                                            .multilineTextAlignment(.trailing)
-                                            .foregroundStyle(viewModel.getOpenStatus(scheduleString: station.schedule).hasPrefix("Abierto") ? .green : .red)
-                                    }.frame(maxWidth: .infinity, alignment: .trailing)
-                                }
-                                .contentShape(Rectangle()) // Esto hace que todo el HStack sea "clickable"
-                                .background(Color.clear)
+                                Spacer()
                             }
-                            Spacer()
                         }
-                    }
-                    .listStyle(.automatic)
-                    .scrollContentBackground(.hidden)
-                    .background(Color.clear)
-                    .padding(.top, -18)
-                    .onChange(of: viewModel.expandedItem) { _ in
-                        withAnimation(.easeInOut(duration: 1.2)) {
-                            scrollView.scrollTo(viewModel.expandedItem, anchor: .top)
+                        .listStyle(.automatic)
+                        .scrollContentBackground(.hidden)
+                        .background(Color.clear)
+                        .padding(.top, -18)
+                        .onChange(of: viewModel.expandedItem) { _ in
+                            withAnimation(.easeInOut(duration: 1.2)) {
+                                scrollView.scrollTo(viewModel.expandedItem, anchor: .top)
+                            }
                         }
                     }
                 }
@@ -669,7 +696,6 @@ struct LocationSearchView: View {
                     }
                     .onTapGesture {
                         locationManager.setCustomUserLocation(target: result)
-                        //viewModel.filterGasStations()
                         isPresented = false
                     }
                     
@@ -682,7 +708,11 @@ struct LocationSearchView: View {
             })
         }
         .onDisappear {
+            withAnimation {
+                viewModel.hideFilters()
+            }
             viewModel.loadGasStations()
+            
         }
     }
 }
