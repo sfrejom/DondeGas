@@ -178,9 +178,6 @@ class DondeGasViewModel: ObservableObject {
     }
     
     func getOpenStatus(scheduleString: String) -> String {
-        
-        var fullSchedule = ""
-        
         let diaANumero = [
             "L":1,
             "M":2,
@@ -353,6 +350,13 @@ class DondeGasViewModel: ObservableObject {
             return palette.softGreen
         case .hidrogen:
             return palette.greenishBlue
+        }
+    }
+    
+    func launchCoffeePayment() {
+        PaymentManager.shared.startPayment { result in
+            // Maneja el resultado del pago aquí
+            // Por ejemplo, actualizar la interfaz de usuario en base al resultado
         }
     }
 }

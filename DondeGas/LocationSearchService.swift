@@ -34,6 +34,6 @@ class LocationSearchService: NSObject, MKLocalSearchCompleterDelegate {
     }
 
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-        // Manejar errores aquí
+        // Error manager
     }
 }

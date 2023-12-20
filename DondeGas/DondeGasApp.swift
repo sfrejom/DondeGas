@@ -336,6 +336,8 @@ struct SlidingCardView: View {
     @GestureState private var dragState = DragState.inactive
     @StateObject var locationManager = LocationManager.shared
     
+    
+    
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 5)
@@ -508,7 +510,7 @@ struct SlidingCardView: View {
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
                         .padding(.top, -18)
-                        .onChange(of: viewModel.expandedItem) { _ in
+                        .onChange(of: viewModel.expandedItem) {
                             withAnimation(.easeInOut(duration: 1.2)) {
                                 scrollView.scrollTo(viewModel.expandedItem, anchor: .top)
                             }
@@ -525,8 +527,8 @@ struct SlidingCardView: View {
         .gesture(dragGesture)
         .edgesIgnoringSafeArea(.bottom)
         .animation(.interactiveSpring(), value: dragState.translation)
-        .onChange(of: viewModel.isCoffeeMenuVisible) { newValue in
-            if newValue {
+        .onChange(of: viewModel.isCoffeeMenuVisible) {
+            if viewModel.isCoffeeMenuVisible {
                 withAnimation {
                     cardState = .collapsed
                 }
@@ -646,7 +648,7 @@ struct HereComesTheMoneyView: View {
             
             Button(action: {
                 // Lógica de Apple Pay para el pago
-                // Sólo Apple Pay por simplicidad inicialmente, y por no buscarnos movidas.
+                viewModel.launchCoffeePayment()
             }) {
                 HStack {
                     Text("Trato hecho ")
