@@ -8,6 +8,12 @@ final class LocationManager: NSObject, ObservableObject, MKLocalSearchCompleterD
     
     private let locationManager = CLLocationManager()
     
+    @Published var mapPosition = MapCameraPosition.region(
+        MKCoordinateRegion(
+            center: .init(latitude: 40.4165, longitude: -3.70256),
+            span: .init(latitudeDelta: 0.5, longitudeDelta: 0.5)
+        )
+    )
     @Published var region = MKCoordinateRegion()
     @Published var userLocation = MKCoordinateRegion()
     @Published var locationName: String = ""
@@ -19,6 +25,13 @@ final class LocationManager: NSObject, ObservableObject, MKLocalSearchCompleterD
             center: .init(latitude: 40.4165, longitude: -3.70256),
             span: .init(latitudeDelta: 0.5, longitudeDelta: 0.5)
         )
+        /*
+        mapPosition = MapCameraPosition.region(
+            MKCoordinateRegion(
+                center: .init(latitude: 40.4165, longitude: -3.70256),
+                span: .init(latitudeDelta: 0.5, longitudeDelta: 0.5)
+            )
+        )*/
         
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -86,25 +99,11 @@ extension LocationManager: CLLocationManagerDelegate {
         return result
     }
     
-    private func obtainCurrentLocationName(completion: @escaping (CLPlacemark?) -> Void) {
-        let geocoder = CLGeocoder()
-        let userLocation = CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)
-        
-        geocoder.reverseGeocodeLocation(userLocation, completionHandler: { (placemarks, error) in
-                if let error = error {
-                    print("Error en la geocodificación inversa: \(error)")
-                    completion(nil)
-                    return
-                }
-
-                guard let placemark = placemarks?.first else {
-                    print("No se encontraron placemarks.")
-                    completion(nil)
-                    return
-                }
-
-                completion(placemark)
-            })
+    func focusOnUser() {
+        withAnimation(.easeInOut(duration: 2.5)) {
+            self.region = self.userLocation
+            self.mapPosition = MapCameraPosition.region(self.userLocation)
+        }
     }
     
     func setLocation(latitude: String, longitude: String) {
@@ -113,6 +112,13 @@ extension LocationManager: CLLocationManagerDelegate {
                 self.region = MKCoordinateRegion(
                     center: .init(latitude: lat - 0.006, longitude: long),
                     span: .init(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                )
+                
+                self.mapPosition = MapCameraPosition.region(
+                    MKCoordinateRegion(
+                        center: .init(latitude: lat - 0.006, longitude: long),
+                        span: .init(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                    )
                 )
             }
         }
@@ -124,12 +130,13 @@ extension LocationManager: CLLocationManagerDelegate {
                 center: .init(latitude: latitude - 0.006, longitude: longitude),
                 span: .init(latitudeDelta: 0.02, longitudeDelta: 0.02)
             )
-        }
-    }
-    
-    func focusOnUser() {
-        withAnimation(.easeInOut(duration: 2.5)) {
-            self.region = self.userLocation
+            
+            self.mapPosition = MapCameraPosition.region(
+                MKCoordinateRegion(
+                    center: .init(latitude: latitude - 0.006, longitude: longitude),
+                    span: .init(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                )
+            )
         }
     }
     
@@ -161,8 +168,28 @@ extension LocationManager: CLLocationManagerDelegate {
             }
         }
     }
-
     
+    private func obtainCurrentLocationName(completion: @escaping (CLPlacemark?) -> Void) {
+        let geocoder = CLGeocoder()
+        let userLocation = CLLocation(latitude: region.center.latitude, longitude: region.center.longitude)
+        
+        geocoder.reverseGeocodeLocation(userLocation, completionHandler: { (placemarks, error) in
+                if let error = error {
+                    print("Error en la geocodificación inversa: \(error)")
+                    completion(nil)
+                    return
+                }
+
+                guard let placemark = placemarks?.first else {
+                    print("No se encontraron placemarks.")
+                    completion(nil)
+                    return
+                }
+
+                completion(placemark)
+            })
+    }
+
     func searchForLocation(using suggestion: MKLocalSearchCompletion, completion: @escaping (CLLocationCoordinate2D?) -> Void) {
         let searchRequest = MKLocalSearch.Request(completion: suggestion)
         let search = MKLocalSearch(request: searchRequest)

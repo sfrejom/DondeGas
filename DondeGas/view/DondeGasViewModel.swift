@@ -25,7 +25,6 @@ class DondeGasViewModel: ObservableObject {
     
     @Published var isFuelMenuVisible: Bool = false
     @Published var isLocationMenuVisible: Bool = false
-    @Published var isCoffeeMenuVisible: Bool = false
     
     @Published var collectionDate: String = ""
     @Published var allGasStations: [GasStation] = []
@@ -42,8 +41,24 @@ class DondeGasViewModel: ObservableObject {
     private var locationSearchService = LocationSearchService()
     private var searchCancellable: AnyCancellable?
     
+    public let CARD_HEIGHT_COLLAPSED = CGFloat(425)
+    public let CARD_HEIGHT_NEUTRAL = CGFloat(180)
+    public let CARD_HEIGHT_EXPANDED = CGFloat(-75)
+    private var CARDSTATE_LOWER_THRESHOLD: CGFloat { CARD_HEIGHT_NEUTRAL * 1.20 }
+    private var CARDSTATE_UPPER_THRESHOLD: CGFloat { CARD_HEIGHT_EXPANDED * 0.8 }
+    
+    enum CardState {
+        case COLLAPSED
+        case NEUTRAL
+        case EXPANDED
+    }
+    @Published var latestCardState: CardState = .NEUTRAL
+    @Published var slidingCardOffset = CGSize.zero
+    
     init() {
         loadGasStations()
+        
+        slidingCardOffset = CGSize(width: CGFloat.zero, height: Double(CARD_HEIGHT_NEUTRAL)) // Iniciar en 180
         
         locationSearchService.onUpdate = { [weak self] results in
                     self?.searchResults = results
@@ -53,7 +68,7 @@ class DondeGasViewModel: ObservableObject {
                     .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
                     .sink { [weak self] query in
                         self?.locationSearchService.updateSearch(text: query)
-        }
+                    }
     }
     
     func loadGasStations() {
@@ -68,7 +83,7 @@ class DondeGasViewModel: ObservableObject {
                         let decodedResponse = try JSONDecoder().decode(GasStationsResponse.self, from: data)
                         self?.allGasStations = Array(decodedResponse.ListaEESSPrecio)
                         
-                        // Gestión de fecha de recolección
+                        // Collection date management
                         let dateElements = String(decodedResponse.Fecha).split(separator: " ")
                         self?.collectionDate = String(dateElements.first ?? "")
 
@@ -88,17 +103,17 @@ class DondeGasViewModel: ObservableObject {
     }
     
     func filterGasStations() {
-        // Filtrado por ubicación
+        // Location filtering
         gasStations = []
         gasStations = allGasStations.filter { locationManager.distanceToGasStation(station: $0) < Double(reachLimit) }
         
-        // Filtrado por tipo de combustible
+        // Fuel type filtering
         gasStations = gasStations.filter { $0.prices[selectedFuelType] != nil && $0.prices[selectedFuelType] != "" }
         
-        // Ordenar por precio
+        // Price sorting
         gasStations.sort { Double(($0.prices[selectedFuelType] ?? "") ?? "") ?? Double.infinity < Double(($1.prices[selectedFuelType] ?? "") ?? "") ?? Double.infinity }
         
-        // Mostrar en el mapa
+        // Showing the results in the map
         self.loadStationsLocations()
     }
     
@@ -122,12 +137,36 @@ class DondeGasViewModel: ObservableObject {
     func hideMenus() {
         isFuelMenuVisible = false
         isLocationMenuVisible = false
-        isCoffeeMenuVisible = false
     }
     
     func hideFilters() {
         isFuelMenuVisible = false
         isLocationMenuVisible = false
+    }
+    
+    func setCardState(height: CardState) {
+        switch height {
+        case .COLLAPSED:
+            latestCardState = .COLLAPSED
+            slidingCardOffset.height = CARD_HEIGHT_COLLAPSED
+        case .NEUTRAL:
+            latestCardState = .NEUTRAL
+            slidingCardOffset.height = CARD_HEIGHT_NEUTRAL
+        case .EXPANDED:
+            latestCardState = .EXPANDED
+            slidingCardOffset.height = CARD_HEIGHT_EXPANDED
+        }
+    }
+    
+    func setCardState(movement: CGSize) {
+        switch movement.height {
+        case _ where movement.height < CARDSTATE_UPPER_THRESHOLD:
+            setCardState(height: .EXPANDED)
+        case _ where movement.height > CARDSTATE_LOWER_THRESHOLD:
+            setCardState(height: .COLLAPSED)
+        default:
+            setCardState(height: .NEUTRAL)
+        }
     }
     
     func fuelTypeToCommercialName(fuelType: FuelType) -> String {
@@ -146,6 +185,48 @@ class DondeGasViewModel: ObservableObject {
             return "Gas licuado"
         case .hidrogen:
             return "Hidrógeno"
+        }
+    }
+    
+    func weekdayFromLetter(dayLetter: String) -> String {
+        switch dayLetter {
+            case "L":
+                return "Lunes"
+            case "M":
+                return "Martes"
+            case "X":
+                return "Miércoles"
+            case "J":
+                return "Jueves"
+            case "V":
+                return "Viernes"
+            case "S":
+                return "Sábado"
+            case "D":
+                return "Domingo"
+            case "":
+                return ""
+            default:
+                return "Día no válido"
+        }
+    }
+    
+    func getFuelTypeColor(fuelType: FuelType) -> Color {
+        switch fuelType {
+        case .sp95:
+            return palette.mango
+        case .sp95P:
+            return palette.tangerine
+        case .sp98:
+            return palette.sunburst
+        case .diesel:
+            return palette.sand
+        case .dieselP:
+            return palette.hotSand
+        case .glp:
+            return palette.softGreen
+        case .hidrogen:
+            return palette.greenishBlue
         }
     }
     
@@ -195,12 +276,13 @@ class DondeGasViewModel: ObservableObject {
         
         var weeklySchedule: [Schedule] = []
         
-        for stretch in scheduleString.split(separator: ";") { // Loop entre los distintos periodos de apertura
+        for stretch in scheduleString.split(separator: ";") { // Loop among different open times
             
             var sched: Schedule = Schedule(weekdays: 0...0, scheds: [])
             
             let statusItems = stretch.split(separator: " ")
-            // Intervalo de días de la semana
+            
+            // Weekdays interval
             let weekdayLimits = statusItems[0].split(separator: "-")
             if weekdayLimits.count > 1 {
                 if let lower = diaANumero[String(weekdayLimits[0])], let upper = diaANumero[String(weekdayLimits[1]).replacingOccurrences(of: ":", with: "")] {
@@ -211,14 +293,12 @@ class DondeGasViewModel: ObservableObject {
                     sched.weekdays = limit...limit
                 }
             }
-            
-            // Intervalo de horas de apertura
+
+            // Open hours interval
             let hourTimes = statusItems[1].split(separator: "-")
             if hourTimes[0] == "24H" {
                 sched.scheds.append(0...(24*60))
             } else {
-                
-                // Falta considerar los dos puntos y las ymedias. EL rango ha de tener los minutos del día entre los que está abierto.
                 let openTime = String(hourTimes[0])
                 let closeTime = String(hourTimes[1])
                 
@@ -234,8 +314,7 @@ class DondeGasViewModel: ObservableObject {
                     let closeTimeMinutes = Int(closeTimeParts[1]) {
                    closeTimeInMinutes = closeTimeMinutes + (60 * closeTimeHours)
                 }
-                
-                // Esto crashea cuando, por algún motivo, openTimeInMinutes es mayor que closeTimeInMinutes
+
                 if openTimeInMinutes < closeTimeInMinutes {
                     sched.scheds.append(openTimeInMinutes...closeTimeInMinutes)
                 }
@@ -252,7 +331,8 @@ class DondeGasViewModel: ObservableObject {
             
             return minutes
         }
-        // Obtenemos la hora actual. Literalmente solo el numerito correspondiente a la hora.
+
+        // Obtaining the current hour time. I mean, only the hour. Like, 7 out of 07:45.
         var currentHour: Int {
             return Calendar.current.component(.hour, from: Date())
         }
@@ -274,38 +354,14 @@ class DondeGasViewModel: ObservableObject {
         return "Cerrado"
     }
     
-    func weekdayFromLetter(dayLetter: String) -> String {
-        switch dayLetter {
-            case "L":
-                return "Lunes"
-            case "M":
-                return "Martes"
-            case "X":
-                return "Miércoles"
-            case "J":
-                return "Jueves"
-            case "V":
-                return "Viernes"
-            case "S":
-                return "Sábado"
-            case "D":
-                return "Domingo"
-            case "":
-                return ""
-            default:
-                return "Día no válido"
-        }
-    }
-
-    
     func getSchedule(scheduleString: String) -> String {
         var fullSchedule = ""
 
-        for stretch in scheduleString.split(separator: ";") { // Loop entre los distintos periodos de apertura
+        for stretch in scheduleString.split(separator: ";") { // Loop between open periods
             
             let statusItems = stretch.split(separator: " ")
             var stretchSchedule = ""
-            // Intervalo de días de la semana
+            // Weekday interval
             let weekdayLimits = statusItems[0].split(separator: "-")
             var from = ""
             var to = ""
@@ -317,7 +373,7 @@ class DondeGasViewModel: ObservableObject {
                 
             }
             
-            // Intervalo de horas de apertura
+            // Open time interval
             let hourTimes = statusItems[1].split(separator: "-")
             if hourTimes[0] == "24H" {
                 stretchSchedule = "\(weekdayFromLetter(dayLetter: from)) \(from != "" ? "a" : "" ) \(weekdayFromLetter(dayLetter: to)):\n 24H\n"
@@ -333,30 +389,5 @@ class DondeGasViewModel: ObservableObject {
         
         return fullSchedule.isEmpty ? "Horario no disponible" : fullSchedule
     }
-    
-    func getFuelTypeColor(fuelType: FuelType) -> Color {
-        switch fuelType {
-        case .sp95:
-            return palette.mango
-        case .sp95P:
-            return palette.tangerine
-        case .sp98:
-            return palette.sunburst
-        case .diesel:
-            return palette.sand
-        case .dieselP:
-            return palette.hotSand
-        case .glp:
-            return palette.softGreen
-        case .hidrogen:
-            return palette.greenishBlue
-        }
-    }
-    
-    func launchCoffeePayment() {
-        PaymentManager.shared.startPayment { result in
-            // Maneja el resultado del pago aquí
-            // Por ejemplo, actualizar la interfaz de usuario en base al resultado
-        }
-    }
+
 }

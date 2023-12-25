@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9D802A792B2B692C00920DDB /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D802A782B2B692C00920DDB /* LocationSearchService.swift */; };
-		9D92AFE62B32198A00B79059 /* PaymentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D92AFE52B32198A00B79059 /* PaymentManager.swift */; };
 		9D9673612B1DCBE200DF3CE9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */; };
 		9DB76FB82B0768FF00605B57 /* DondeGasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FB72B0768FF00605B57 /* DondeGasApp.swift */; };
 		9DB76FBC2B0768FF00605B57 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FBB2B0768FF00605B57 /* Item.swift */; };
@@ -21,7 +20,6 @@
 
 /* Begin PBXFileReference section */
 		9D802A782B2B692C00920DDB /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
-		9D92AFE52B32198A00B79059 /* PaymentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentManager.swift; sourceTree = "<group>"; };
 		9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9DB76FB42B0768FF00605B57 /* DondeGas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DondeGas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DB76FB72B0768FF00605B57 /* DondeGasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DondeGasApp.swift; sourceTree = "<group>"; };
@@ -73,7 +71,6 @@
 				9DEF01742B160527009B4D71 /* ColorPalette.swift */,
 				9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */,
 				9D802A782B2B692C00920DDB /* LocationSearchService.swift */,
-				9D92AFE52B32198A00B79059 /* PaymentManager.swift */,
 			);
 			path = DondeGas;
 			sourceTree = "<group>";
@@ -179,7 +176,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D92AFE62B32198A00B79059 /* PaymentManager.swift in Sources */,
 				9D802A792B2B692C00920DDB /* LocationSearchService.swift in Sources */,
 				9DEF01752B160527009B4D71 /* ColorPalette.swift in Sources */,
 				9DB76FBC2B0768FF00605B57 /* Item.swift in Sources */,

@@ -17,141 +17,31 @@ struct DondeGasApp: App {
     }
 }
 
-enum CardState {
-    case collapsed
-    case halfExpanded
-    case fullyExpanded
-}
-
 struct ContentView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
-    @State private var cardState: CardState = .halfExpanded
     @Environment(\.colorScheme) var colorScheme
     @StateObject var locationManager = LocationManager.shared
     
     var body: some View {
         ZStack(alignment: .topLeading) {
-            Map(coordinateRegion: $locationManager.region, showsUserLocation: !viewModel.usingCustomLocation, annotationItems: viewModel.gasStationLocations) {gasStation in
-                //MapMarker(coordinate: gasStation.location, tint: viewModel.getColorCode(gasStation: gasStation.id))
-                MapAnnotation(coordinate: gasStation.location) {
-                    Image(systemName: "fuelpump.circle")
-                        .resizable()
-                        .frame(width: viewModel.expandedItem == gasStation.id ? 45 : 30, height: viewModel.expandedItem == gasStation.id ? 45 : 30)
-                        .foregroundStyle(viewModel.getColorCode(gasStation: gasStation.id))
-                        .onTapGesture {
-                            // Definir nuevo expandedItem
-                            viewModel.expandedItem = gasStation.id
-                        }
-                }
-            }
-            .ignoresSafeArea(.all)
-            .mapStyle(.standard(showsTraffic: true))
-            .onTapGesture {
-                withAnimation(.spring()) {
-                    viewModel.hideMenus()
-                }
-            }
+            GasStationsMap()
             
-            Button(action: {
-                if !viewModel.isCoffeeMenuVisible {
-                    withAnimation(.spring) {
-                        viewModel.hideFilters()
-                    }
-                }
-                                
-                withAnimation(.spring) {
-                    viewModel.isCoffeeMenuVisible.toggle()
-                }
-            }) {
-                HStack {
-                    Image(systemName: "cup.and.saucer.fill")
-                        .padding()
-                        .tint(Color.white)
-                        .font(.system(size: 20))
-                }
-                .background(palette.backgroundColor)
-                .cornerRadius(50)
-                .frame(width: 30, height: 30)
-                Spacer()
-            }
-            .offset(x: 35, y: cardState == .fullyExpanded ? 220 : 15)
-
             VStack {
-                
                 Spacer()
-            
-                // Filtros
+                
+                // Filters
                 ZStack {
                     FuelMenuCardView()
                     LocationMenuCardView()
                 }
                 
+                // Filters menu
+                FilterButtons()
                 
-                // Botones de filtros
-                HStack(spacing: 0) {
-                    // Menú de tipo de combustible
-                    Button(action: {
-                        if cardState == .fullyExpanded {
-                            withAnimation(.spring()) {
-                                cardState = .halfExpanded
-                            }
-                        }
-                        withAnimation(.spring()) {
-                            viewModel.isFuelMenuVisible.toggle()
-                            viewModel.isLocationMenuVisible = false
-                            viewModel.isCoffeeMenuVisible = false
-                        }
-                    }) {
-                        HStack {
-                            Image(systemName: "fuelpump.fill")
-                                .font(.system(size:24))
-                                .padding(.leading, 12)
-                            Text(viewModel.fuelTypeToCommercialName(fuelType: viewModel.selectedFuelType))
-                        }
-                    }
-                    .clipped()
-                    .frame(width: 150, height: 60, alignment: .leading)
-                    .cornerRadius(10, corners: [.topLeft, .bottomLeft])
-                    .background(palette.backgroundColor)
-                    .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
-                    .multilineTextAlignment(.leading)
-                    
-                    Button(action: {
-                        if cardState == .fullyExpanded {
-                            withAnimation(.spring()) {
-                                cardState = .halfExpanded
-                            }
-                        }
-                        
-                        withAnimation(.spring()) {
-                            viewModel.isLocationMenuVisible.toggle()
-                            viewModel.isFuelMenuVisible = false
-                            viewModel.isCoffeeMenuVisible = false
-                        }
-                    }) {
-                        HStack {
-                            Text("\(locationManager.locationName)")
-                            Image(systemName: "location.fill")
-                                .font(.system(size:24))
-                                .padding(.trailing, 12)
-                        }
-                    }
-                    .clipped()
-                    .frame(width: 150, height: 60, alignment: .trailing)
-                    .cornerRadius(10, corners: [.topRight, .bottomRight])
-                    .background(palette.backgroundColor)
-                    .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
-                    .multilineTextAlignment(.leading)
-                }
-                .clipped()
-                .cornerRadius(10)
-
                 // Tarjeta deslizante
-                SlidingCardView(cardState: $cardState)
+                SlidingCardView()
                     .edgesIgnoringSafeArea(.all)
             }
-            
-            HereComesTheMoneyView()
         }
         .onAppear {
             viewModel.loadGasStations()
@@ -160,10 +50,139 @@ struct ContentView: View {
     }
 }
 
+struct GasStationsMap: View {
+    @EnvironmentObject var viewModel: DondeGasViewModel
+    @StateObject var locationManager = LocationManager.shared
+    
+    var body: some View {
+        Map {
+            ForEach(viewModel.gasStationLocations, id: \.id) { station in
+                Annotation( "", coordinate: station.location, anchor: .center, content: {
+                    Button(action: {
+                        viewModel.expandedItem = station.id
+                    }) {
+                        Image(systemName: "fuelpump.circle.fill")
+                            .foregroundColor(viewModel.getColorCode(gasStation: station.id))
+                            .padding(10)
+                            //.resizable()
+                            .scaledToFit()
+                            .frame(width: viewModel.expandedItem == station.id ? 40 : 28, height: viewModel.expandedItem == station.id ? 40 : 28)
+                        /*
+                            
+                            .border(width: viewModel.expandedItem == station.id ? 20 : 0)
+                         */
+                    }
+                    //VStack {}
+                })
+            }
+             
+        }
+        .selectionDisabled(false)
+        .ignoresSafeArea(.all)
+        .mapStyle(.standard(showsTraffic: true))
+        .onTapGesture {
+            withAnimation(.spring()) {
+                viewModel.hideMenus()
+                    
+                if viewModel.latestCardState == .EXPANDED {
+                    viewModel.setCardState(height: .NEUTRAL)
+                }
+            }
+        }//)
+    }
+}
+
+// Initially, the app won't contain any form on monetization. However, future updates
+// might implement this feature.
+/*
+struct CoffeButton: View {
+    @EnvironmentObject var viewModel: DondeGasViewModel
+    
+    var body: some View {
+        Button(action: {
+            withAnimation(.spring) {
+                if !viewModel.isCoffeeMenuVisible {
+                    viewModel.hideFilters()
+                }
+                
+                viewModel.isCoffeeMenuVisible.toggle()
+            }
+        }) {
+            HStack {
+                Image(systemName: "cup.and.saucer.fill")
+                    .padding()
+                    .tint(Color.white)
+                    .font(.system(size: 20))
+            }
+            .background(palette.backgroundColor)
+            .cornerRadius(50)
+            .frame(width: 30, height: 30)
+            
+            Spacer()
+        }
+        .offset(x: 35, y: 120)
+    }
+}
+ 
+
+ struct CoffeeView: View {
+     @EnvironmentObject var viewModel: DondeGasViewModel
+     @Environment(\.colorScheme) var colorScheme
+     
+     var body: some View {
+         VStack (alignment: .center) {
+             Spacer()
+             Text("¿Te gusta DondeGas?")
+                 .font(.title)
+                 .bold()
+             Text("Sin anuncios es todavía mejor ")
+                 .font(.title3)
+             
+             Text("Este desarrollador necesita más café para seguir mejorando la aplicación.\n\nSi me invitas a uno, no verás más anuncios en DondeGas.")
+                 .font(.callout)
+                 .multilineTextAlignment(.center)
+                 .padding()
+                 .padding(.horizontal, 20)
+                 .padding(.top, 20)
+             
+             
+             Spacer()
+             
+             Button(action: {
+                 // Lógica de Apple Pay para el pago
+                 viewModel.launchCoffeePayment()
+             }) {
+                 HStack {
+                     Text("Trato hecho ")
+                         .fontWeight(.heavy)
+                         .font(.system(size: 22))
+                     Image(systemName: "cup.and.saucer")
+                         .tint(Color.white)
+                         .font(.system(size: 25))
+                 }
+                 .padding()
+             }
+             .background(LinearGradient(gradient: Gradient(colors: [Color.brown, Color.black.opacity(0.8)]), startPoint: .topLeading, endPoint: .bottomTrailing))
+             .cornerRadius(25)
+             .shadow(color: .gray.opacity(0.7), radius: 8, x: -8, y: -8)
+             .shadow(color: .gray.opacity(0.5), radius: 8, x: 8, y: 8)
+             Spacer()
+         }
+         .frame(width: 350, height: 500)
+         .background(palette.backgroundColor)
+         .cornerRadius(10)
+         .shadow(radius: 5)
+         .offset(x: viewModel.isCoffeeMenuVisible ? 20 : -350, y: 100)
+         .opacity(viewModel.isCoffeeMenuVisible ? 1 : 0)
+     }
+ }
+ 
+*/
+
 struct FuelMenuCardView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
     @Environment(\.colorScheme) var colorScheme
-
+    
     var body: some View {
         VStack {
             ScrollView {
@@ -195,12 +214,12 @@ struct FuelMenuCardView: View {
             }
             .padding(.top, 18)
         }
-        .frame(width: 300, height: 300)
+        .frame(width: 300, height: viewModel.isFuelMenuVisible ? 300 : 0)
         .background(palette.backgroundColor)
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(viewModel.isFuelMenuVisible ? 1 : 0)
-        .offset(y: viewModel.isFuelMenuVisible ? -5 : 375 )
+        .offset(y: (viewModel.isFuelMenuVisible ? -5 : 150) + viewModel.slidingCardOffset.height)
     }
 }
 
@@ -231,6 +250,7 @@ struct LocationMenuCardView: View {
             }
             
             Spacer()
+            
             if viewModel.usingCustomLocation {
                 VStack {
                     Text("Ubicación seleccionada")
@@ -268,7 +288,7 @@ struct LocationMenuCardView: View {
                     Text(viewModel.reachLimit > 1 ? "km de \(locationManager.locationName)" : "kms de \(locationManager.locationName)")
                         .font(.system(size: 18))
                 }
-            
+                
                 Slider(
                     value: $distance,
                     in: 0...100,
@@ -280,7 +300,7 @@ struct LocationMenuCardView: View {
                 )
                 .tint(Color.blue)
                 .frame(width: 210)
-                    
+                
                 Spacer()
             } else {
                 VStack {
@@ -291,9 +311,11 @@ struct LocationMenuCardView: View {
                             .foregroundStyle(.blue)
                         Text("\(locationManager.locationName)")
                             .font(.system(size: 26))
-                            .fontWeight(.bold)                }
+                        .fontWeight(.bold)                }
                 }
+                
                 Spacer(minLength: 20)
+                
                 HStack {
                     Text ("Estaciones a")
                         .font(.system(size: 18))
@@ -304,7 +326,7 @@ struct LocationMenuCardView: View {
                     Text(viewModel.reachLimit > 1 ? "km de ti" : "kms de ti")
                         .font(.system(size: 18))
                 }
-            
+                
                 Slider(
                     value: $distance,
                     in: 0...100,
@@ -316,26 +338,86 @@ struct LocationMenuCardView: View {
                 )
                 .tint(Color.blue)
                 .frame(width: 210)
-                    
+                
                 Spacer()
             }
         }
-        .frame(width: 300, height: 300)
+        .frame(width: 300, height: viewModel.isLocationMenuVisible ? 300 : 0)
         .background(palette.backgroundColor)
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(viewModel.isLocationMenuVisible ? 1 : 0)
-        .offset(y: viewModel.isLocationMenuVisible ? -5 : 375 )
+        .offset(y: (viewModel.isLocationMenuVisible ? -5 : 150) + viewModel.slidingCardOffset.height)
+    }
+}
+
+struct FilterButtons: View {
+    @EnvironmentObject var viewModel: DondeGasViewModel
+    @StateObject var locationManager = LocationManager.shared
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            // Fuel type menu button
+            Button(action: {
+                withAnimation(.spring()) {
+                    if viewModel.latestCardState == .EXPANDED {
+                        viewModel.setCardState(height: .NEUTRAL)
+                    }
+                    
+                    viewModel.isFuelMenuVisible.toggle()
+                    viewModel.isLocationMenuVisible = false
+                }
+            }) {
+                HStack {
+                    Image(systemName: "fuelpump.fill")
+                        .font(.system(size:24))
+                        .padding(.leading, 12)
+                    Text(viewModel.fuelTypeToCommercialName(fuelType: viewModel.selectedFuelType))
+                }
+            }
+            .clipped()
+            .frame(width: 150, height: 60, alignment: .leading)
+            .cornerRadius(10, corners: [.topLeft, .bottomLeft])
+            .background(palette.backgroundColor)
+            .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
+            .multilineTextAlignment(.leading)
+            
+            // Location menu button
+            Button(action: {
+                withAnimation(.spring()) {
+                    if viewModel.latestCardState == .EXPANDED {
+                        viewModel.setCardState(height: .NEUTRAL)
+                    }
+                    
+                    viewModel.isLocationMenuVisible.toggle()
+                    viewModel.isFuelMenuVisible = false
+                }
+            }) {
+                HStack {
+                    Text("\(locationManager.locationName)")
+                    Image(systemName: "location.fill")
+                        .font(.system(size:24))
+                        .padding(.trailing, 12)
+                }
+            }
+            .clipped()
+            .frame(width: 150, height: 60, alignment: .trailing)
+            .cornerRadius(10, corners: [.topRight, .bottomRight])
+            .background(palette.backgroundColor)
+            .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
+            .multilineTextAlignment(.leading)
+        }
+        .clipped()
+        .cornerRadius(10)
+        .offset(y: viewModel.slidingCardOffset.height)
     }
 }
 
 struct SlidingCardView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
     @Environment(\.colorScheme) var colorScheme
-    @Binding var cardState: CardState
     @GestureState private var dragState = DragState.inactive
     @StateObject var locationManager = LocationManager.shared
-    
     
     
     var body: some View {
@@ -344,39 +426,45 @@ struct SlidingCardView: View {
                 .frame(width: 40, height: 5)
                 .background(palette.backgroundColor)
                 .padding(.top, 8)
-                .zIndex(1) // Asegura que el RoundedRectangle se mantiene en la capa superior
+                .zIndex(1)
             
             if viewModel.isLoading {
-                Spacer()
-                ProgressView("Cargando datos...")
-                Spacer()
-                
-            } else if !viewModel.errorMessage.isEmpty {
-                Spacer()
-                Text("¡Vaya! Parece que ha habido un error")
-                    .padding(.bottom, 3)
-                    .frame(alignment: .center)
-                    .bold()
-                    .font(.system(size: 20))
-                Text("Comprueba tu conexión y vuelve a intentarlo")
-                    .padding(.top, 0)
-                    .padding(.bottom, 10)
-                    .frame(alignment: .center)
-                    .font(.system(size: 16))
-                    .foregroundStyle(.gray)
-                Button(action: {
-                    viewModel.loadGasStations()
-                }) {
-                    HStack {
-                        Image(systemName: "arrow.clockwise") // Ícono de reintentar
-                        Text("Reintentar")
-                    }
-                    .padding()
-                    .foregroundColor(.white)
-                    .background(Color.blue)
-                    .cornerRadius(10)
+                VStack {
+                    Spacer()
+                    ProgressView("Buscando los mejores precios...")
+                        .padding(.bottom, 50)
+                    Spacer()
                 }
-                Spacer()
+                .padding(.bottom, 150)
+            } else if !viewModel.errorMessage.isEmpty {
+                VStack {
+                    Spacer()
+                    Text("¡Vaya! Parece que ha habido un error")
+                        .padding(.bottom, 3)
+                        .frame(alignment: .center)
+                        .bold()
+                        .font(.system(size: 20))
+                    Text("Comprueba tu conexión y vuelve a intentarlo")
+                        .padding(.top, 0)
+                        .padding(.bottom, 10)
+                        .frame(alignment: .center)
+                        .font(.system(size: 16))
+                        .foregroundStyle(.gray)
+                    Button(action: {
+                        viewModel.loadGasStations()
+                    }) {
+                        HStack {
+                            Image(systemName: "arrow.clockwise") // Ícono de reintentar
+                            Text("Reintentar")
+                        }
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .cornerRadius(10)
+                    }
+                    Spacer()
+                }
+                .padding(.bottom, 200)
             } else {
                 Spacer()
                 HStack {
@@ -406,7 +494,7 @@ struct SlidingCardView: View {
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                             .padding(.top, 20)
-                    
+                        
                         Text("Prueba a aumentar el radio de búsqueda en el menú de ubicación")
                             .font(.system(size: 16, weight: .regular))
                             .multilineTextAlignment(.center)
@@ -519,69 +607,30 @@ struct SlidingCardView: View {
                 }
             }
         }
-        .frame(height: cardHeight(for: cardState) + dragState.translation.height)
+        .frame(height: 600)
         .frame(maxWidth: .infinity)
         .background(palette.backgroundColor)
         .cornerRadius(10)
         .shadow(radius: 5)
+        .offset(y: viewModel.slidingCardOffset.height)
         .gesture(dragGesture)
         .edgesIgnoringSafeArea(.bottom)
         .animation(.interactiveSpring(), value: dragState.translation)
-        .onChange(of: viewModel.isCoffeeMenuVisible) {
-            if viewModel.isCoffeeMenuVisible {
-                withAnimation {
-                    cardState = .collapsed
-                }
-            } else {
-                withAnimation {
-                    cardState = .halfExpanded
-                }
-            }
-        }
-    }
-    
-    // Ajustar la función cardHeight para que coincida con las alturas deseadas
-    private func cardHeight(for state: CardState) -> CGFloat {
-        let screenHeight = UIScreen.main.bounds.height
-        let topSafeAreaHeight = (UIApplication.shared.windows.first?.safeAreaInsets.top ?? 0)
-        let bottomSafeAreaHeight = (UIApplication.shared.windows.first?.safeAreaInsets.bottom ?? 0)
-        let usableScreenHeight = screenHeight - topSafeAreaHeight - bottomSafeAreaHeight
-        
-        // Se añade un factor de correción a cada posición
-        switch state {
-        case .collapsed:
-            return bottomSafeAreaHeight * 2.5
-        case .halfExpanded:
-            return usableScreenHeight * 0.45
-        case .fullyExpanded:
-            return (screenHeight - topSafeAreaHeight)
-        }
     }
     
     var dragGesture: some Gesture {
         DragGesture()
-            .updating($dragState) { drag, state, transaction in
-                state = .dragging(translation: drag.translation)
+            .onChanged { gesture in
+                withAnimation {
+                    viewModel.slidingCardOffset.height = gesture.translation.height
+                }
             }
             .onEnded { drag in
-                withAnimation(.spring()) {
-                    let verticalMovement = drag.translation.height / cardHeight(for: cardState)
-                    if cardState == .collapsed && verticalMovement < -0.25 {
-                        cardState = .halfExpanded
-                    } else if cardState == .halfExpanded {
-                        if verticalMovement > 0.25 {
-                            cardState = .collapsed
-                        } else if verticalMovement < -0.25 {
-                            viewModel.hideMenus()
-                            cardState = .fullyExpanded
-                        }
-                    } else if cardState == .fullyExpanded && verticalMovement > 0.25 {
-                        cardState = .halfExpanded
-                    }
+                withAnimation {
+                    viewModel.setCardState(movement: viewModel.slidingCardOffset)
                 }
             }
     }
-    
     
     enum DragState {
         case inactive
@@ -610,9 +659,10 @@ struct SlidingCardView: View {
 struct RoundedCorner: Shape {
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners
-
+    
     func path(in rect: CGRect) -> Path {
         let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        
         return Path(path.cgPath)
     }
 }
@@ -623,62 +673,9 @@ extension View {
     }
 }
 
-struct HereComesTheMoneyView: View {
-    @EnvironmentObject var viewModel: DondeGasViewModel
-    @Environment(\.colorScheme) var colorScheme
-    
-    var body: some View {
-        VStack (alignment: .center) {
-            Spacer()
-            Text("¿Te gusta DondeGas?")
-                .font(.title)
-                .bold()
-            Text("Sin anuncios es todavía mejor ")
-                .font(.title3)
-                            
-            Text("Este desarrollador necesita más café para seguir mejorando la aplicación.\n\nSi me invitas a uno, no verás más anuncios en DondeGas.")
-                .font(.callout)
-                .multilineTextAlignment(.center)
-                .padding()
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
-
-            
-            Spacer()
-            
-            Button(action: {
-                // Lógica de Apple Pay para el pago
-                viewModel.launchCoffeePayment()
-            }) {
-                HStack {
-                    Text("Trato hecho ")
-                        .fontWeight(.heavy)
-                        .font(.system(size: 22))
-                    Image(systemName: "cup.and.saucer")
-                        .tint(Color.white)
-                        .font(.system(size: 25))
-                }
-                .padding()
-            }
-            .background(LinearGradient(gradient: Gradient(colors: [Color.brown, Color.black.opacity(0.8)]), startPoint: .topLeading, endPoint: .bottomTrailing))
-            .cornerRadius(25)
-            .shadow(color: .gray.opacity(0.7), radius: 8, x: -8, y: -8)
-            .shadow(color: .gray.opacity(0.5), radius: 8, x: 8, y: 8)
-            Spacer()
-        }
-        .frame(width: 350, height: 500)
-        .background(palette.backgroundColor)
-        .cornerRadius(10)
-        .shadow(radius: 5)
-        .offset(x: viewModel.isCoffeeMenuVisible ? 20 : -350, y: 100)
-        .opacity(viewModel.isCoffeeMenuVisible ? 1 : 0)
-    }
-}
-
 struct LocationSearchView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
     @Binding var isPresented: Bool
-
     @StateObject var locationManager = LocationManager.shared
     
     var body: some View {
@@ -690,7 +687,7 @@ struct LocationSearchView: View {
                     .cornerRadius(50)
                     .foregroundStyle(.white)
                     .padding()
-
+                
                 List(viewModel.searchResults, id: \.self) { result in
                     HStack {
                         Text("\(result.title), \(result.subtitle)")
@@ -701,7 +698,7 @@ struct LocationSearchView: View {
                         isPresented = false
                     }
                     
-                        
+                    
                 }
             }
             .navigationBarTitle("Buscar ubicación personalizada", displayMode: .inline)
