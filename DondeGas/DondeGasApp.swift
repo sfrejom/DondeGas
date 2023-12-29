@@ -2,8 +2,6 @@ import SwiftUI
 import MapKit
 import CoreLocation
 
-fileprivate var palette: ColorPalette = ColorPalette()
-
 @main
 struct DondeGasApp: App {
     @StateObject var viewModel = DondeGasViewModel()
@@ -12,14 +10,13 @@ struct DondeGasApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(viewModel)
-                .accentColor(Color.white)
+                .accentColor(Color("TextColor"))
         }
     }
 }
 
 struct ContentView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
-    @Environment(\.colorScheme) var colorScheme
     @StateObject var locationManager = LocationManager.shared
     
     var body: some View {
@@ -83,10 +80,7 @@ struct GasStationsMap: View {
         .onTapGesture {
             withAnimation(.spring()) {
                 viewModel.hideMenus()
-                    
-                if viewModel.latestCardState == .EXPANDED {
-                    viewModel.setCardState(height: .NEUTRAL)
-                }
+                viewModel.setCardState(height: .NEUTRAL)
             }
         }//)
     }
@@ -114,7 +108,7 @@ struct CoffeButton: View {
                     .tint(Color.white)
                     .font(.system(size: 20))
             }
-            .background(palette.backgroundColor)
+            .background(Color("TranslucidBackgroundColor")
             .cornerRadius(50)
             .frame(width: 30, height: 30)
             
@@ -127,7 +121,6 @@ struct CoffeButton: View {
 
  struct CoffeeView: View {
      @EnvironmentObject var viewModel: DondeGasViewModel
-     @Environment(\.colorScheme) var colorScheme
      
      var body: some View {
          VStack (alignment: .center) {
@@ -169,7 +162,7 @@ struct CoffeButton: View {
              Spacer()
          }
          .frame(width: 350, height: 500)
-         .background(palette.backgroundColor)
+         .background(Color("TranslucidBackgroundColor")
          .cornerRadius(10)
          .shadow(radius: 5)
          .offset(x: viewModel.isCoffeeMenuVisible ? 20 : -350, y: 100)
@@ -181,7 +174,6 @@ struct CoffeButton: View {
 
 struct FuelMenuCardView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
-    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack {
@@ -215,7 +207,7 @@ struct FuelMenuCardView: View {
             .padding(.top, 18)
         }
         .frame(width: 300, height: viewModel.isFuelMenuVisible ? 300 : 0)
-        .background(palette.backgroundColor)
+        .background(Color("TranslucidBackgroundColor"))
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(viewModel.isFuelMenuVisible ? 1 : 0)
@@ -226,7 +218,6 @@ struct FuelMenuCardView: View {
 
 struct LocationMenuCardView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
-    @Environment(\.colorScheme) var colorScheme
     @State private var distance: Double = 5
     @StateObject var locationManager = LocationManager.shared
     @State private var showingSearchSheet = false
@@ -234,8 +225,8 @@ struct LocationMenuCardView: View {
     var body: some View {
         VStack {
             Picker("Selecciona un modo de búsqueda", selection: $viewModel.usingCustomLocation) {
-                Text("Tu ubicación").tag(false)
-                Text("Búsqueda").tag(true)
+                Text(NSLocalizedString("Tu ubicación", comment: "")).tag(false)
+                Text(NSLocalizedString("Búsqueda", comment: "")).tag(true)
             }
             .pickerStyle(.segmented)
             .padding()
@@ -253,7 +244,7 @@ struct LocationMenuCardView: View {
             
             if viewModel.usingCustomLocation {
                 VStack {
-                    Text("Ubicación seleccionada")
+                    Text(NSLocalizedString("Ubicación seleccionada", comment: ""))
                         .font(.system(size: 16))
                     HStack {
                         Image(systemName: "location.magnifyingglass")
@@ -279,13 +270,13 @@ struct LocationMenuCardView: View {
                 }
                 Spacer(minLength: 20)
                 HStack {
-                    Text ("Estaciones a")
+                    Text (NSLocalizedString("Estaciones a", comment: ""))
                         .font(.system(size: 18))
                     Text(String(Int($distance.wrappedValue)))
                         .font(.system(size: 18))
                         .bold()
                         .foregroundStyle(Color.blue)
-                    Text(viewModel.reachLimit > 1 ? "km de \(locationManager.locationName)" : "kms de \(locationManager.locationName)")
+                    Text(viewModel.reachLimit > 1 ? String(format: NSLocalizedString("kms de %@", comment: ""), locationManager.locationName) : String(format: NSLocalizedString("km de %@", comment: ""), locationManager.locationName))
                         .font(.system(size: 18))
                 }
                 
@@ -304,7 +295,7 @@ struct LocationMenuCardView: View {
                 Spacer()
             } else {
                 VStack {
-                    Text("Ubicación actual")
+                    Text(NSLocalizedString("Ubicación actual", comment: ""))
                         .font(.system(size: 16))
                     HStack {
                         Image(systemName: "location.fill")
@@ -317,13 +308,13 @@ struct LocationMenuCardView: View {
                 Spacer(minLength: 20)
                 
                 HStack {
-                    Text ("Estaciones a")
+                    Text (NSLocalizedString("Estaciones a", comment: ""))
                         .font(.system(size: 18))
                     Text(String(Int($distance.wrappedValue)))
                         .font(.system(size: 18))
                         .bold()
                         .foregroundStyle(Color.blue)
-                    Text(viewModel.reachLimit > 1 ? "km de ti" : "kms de ti")
+                    Text(viewModel.reachLimit > 1 ? NSLocalizedString("km de ti", comment: "") : NSLocalizedString("kms de ti", comment: ""))
                         .font(.system(size: 18))
                 }
                 
@@ -343,7 +334,7 @@ struct LocationMenuCardView: View {
             }
         }
         .frame(width: 300, height: viewModel.isLocationMenuVisible ? 300 : 0)
-        .background(palette.backgroundColor)
+        .background(Color("TranslucidBackgroundColor"))
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(viewModel.isLocationMenuVisible ? 1 : 0)
@@ -378,7 +369,7 @@ struct FilterButtons: View {
             .clipped()
             .frame(width: 150, height: 60, alignment: .leading)
             .cornerRadius(10, corners: [.topLeft, .bottomLeft])
-            .background(palette.backgroundColor)
+            .background(Color("TranslucidBackgroundColor"))
             .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
             .multilineTextAlignment(.leading)
             
@@ -403,7 +394,7 @@ struct FilterButtons: View {
             .clipped()
             .frame(width: 150, height: 60, alignment: .trailing)
             .cornerRadius(10, corners: [.topRight, .bottomRight])
-            .background(palette.backgroundColor)
+            .background(Color("TranslucidBackgroundColor"))
             .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
             .multilineTextAlignment(.leading)
         }
@@ -415,7 +406,6 @@ struct FilterButtons: View {
 
 struct SlidingCardView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
-    @Environment(\.colorScheme) var colorScheme
     @GestureState private var dragState = DragState.inactive
     @StateObject var locationManager = LocationManager.shared
     
@@ -423,28 +413,30 @@ struct SlidingCardView: View {
     var body: some View {
         VStack {
             RoundedRectangle(cornerRadius: 5)
-                .frame(width: 40, height: 5)
-                .background(palette.backgroundColor)
+                .frame(width: 70, height: 5)
+                .background(Color("TranslucidBackgroundColor"))
                 .padding(.top, 8)
+                .padding(.horizontal, 100)
                 .zIndex(1)
+                .gesture(dragGesture)
             
             if viewModel.isLoading {
                 VStack {
                     Spacer()
-                    ProgressView("Buscando los mejores precios...")
+                    ProgressView(NSLocalizedString("Buscando los mejores precios", comment: ""))
                         .padding(.bottom, 50)
                     Spacer()
                 }
-                .padding(.bottom, 150)
+                .padding(.bottom, 380)
             } else if !viewModel.errorMessage.isEmpty {
                 VStack {
                     Spacer()
-                    Text("¡Vaya! Parece que ha habido un error")
+                    Text(NSLocalizedString("¡Vaya! Parece que ha habido un error", comment: ""))
                         .padding(.bottom, 3)
                         .frame(alignment: .center)
                         .bold()
                         .font(.system(size: 20))
-                    Text("Comprueba tu conexión y vuelve a intentarlo")
+                    Text(NSLocalizedString("Comprueba tu conexión y vuelve a intentarlo", comment: ""))
                         .padding(.top, 0)
                         .padding(.bottom, 10)
                         .frame(alignment: .center)
@@ -455,7 +447,7 @@ struct SlidingCardView: View {
                     }) {
                         HStack {
                             Image(systemName: "arrow.clockwise") // Ícono de reintentar
-                            Text("Reintentar")
+                            Text(NSLocalizedString("Reintentar", comment: ""))
                         }
                         .padding()
                         .foregroundColor(.white)
@@ -469,7 +461,7 @@ struct SlidingCardView: View {
                 Spacer()
                 HStack {
                     if viewModel.usingCustomLocation {
-                        Text("Estaciones cerca de \(locationManager.locationName)")
+                        Text(String(format: NSLocalizedString("Estaciones cerca de %@", comment: ""), locationManager.locationName))
                             .font(.system(size: 26, weight: .heavy))
                             .fontDesign(.rounded)
                             .padding(.top, 10)
@@ -477,7 +469,7 @@ struct SlidingCardView: View {
                             .multilineTextAlignment(.center)
                         
                     } else {
-                        Text("Estaciones cerca de ti")
+                        Text(NSLocalizedString("Estaciones cerca de ti", comment: ""))
                             .font(.system(size: 26, weight: .heavy))
                             .fontDesign(.rounded)
                             .padding(.top, 10)
@@ -489,13 +481,16 @@ struct SlidingCardView: View {
                 
                 if viewModel.gasStations.isEmpty {
                     VStack {
-                        Text("No se han encontrado estaciones a \(viewModel.reachLimit) \(viewModel.reachLimit > 1 ? "kms" : "km") de aquí")
+                        Text(
+                            viewModel.reachLimit > 1 ?
+                                String(format: NSLocalizedString("No se han encontrado estaciones a %d kms de aquí", comment: ""),viewModel.reachLimit) :
+                                String(format: NSLocalizedString("No se han encontrado estaciones a %d km de aquí", comment: ""), viewModel.reachLimit))
                             .font(.system(size: 22, weight: .semibold))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
                             .padding(.top, 20)
                         
-                        Text("Prueba a aumentar el radio de búsqueda en el menú de ubicación")
+                        Text(NSLocalizedString("Prueba a aumentar el radio de búsqueda en el menú de ubicación", comment: ""))
                             .font(.system(size: 16, weight: .regular))
                             .multilineTextAlignment(.center)
                             .padding(.horizontal, 40)
@@ -523,6 +518,7 @@ struct SlidingCardView: View {
                                                 Text(station.name)
                                                     .font(.system(size: 14, weight: .bold))
                                                     .multilineTextAlignment(.leading)
+                                                    .foregroundStyle(Color("TextColor"))
                                                 Text((station.prices[viewModel.selectedFuelType] ?? "0.000") ?? "0.000")
                                                     .font(.footnote)
                                                     .foregroundStyle(viewModel.getColorCode(gasStation: station.id))
@@ -535,13 +531,13 @@ struct SlidingCardView: View {
                                                 if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
                                                     let coordinate = CLLocationCoordinate2DMake(stationLatitude, stationLongitude)
                                                     let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
-                                                    mapItem.name = "Abrir en Maps"
+                                                    mapItem.name = NSLocalizedString("Prueba a aumentar el radio de búsqueda en el menú de ubicación", comment: "")
                                                     mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
                                                 }
                                             }) {
                                                 HStack {
                                                     Image(systemName: "car.fill")
-                                                    Text("Ruta hasta allí")
+                                                    Text(NSLocalizedString("Ruta hasta allí", comment: ""))
                                                 }
                                             }
                                             .foregroundStyle(Color.blue)
@@ -553,7 +549,7 @@ struct SlidingCardView: View {
                                                 Spacer()
                                                 Text(viewModel.getOpenStatus(scheduleString: station.schedule))
                                                     .font(.callout)
-                                                    .foregroundStyle(viewModel.getOpenStatus(scheduleString: station.schedule).hasPrefix("Abierto") ? .green : .red)
+                                                    .foregroundStyle(viewModel.getOpenStatus(scheduleString: station.schedule).hasPrefix(NSLocalizedString("Abierto", comment: "")) ? .green : .red)
                                                     .multilineTextAlignment(.trailing)
                                                     .padding(.bottom, 5)
                                             }
@@ -562,6 +558,7 @@ struct SlidingCardView: View {
                                                 Text(viewModel.getSchedule(scheduleString: station.schedule))
                                                     .font(.footnote)
                                                     .multilineTextAlignment(.trailing)
+                                                    .foregroundStyle(Color("TextColor"))
                                             }
                                         }.frame(maxWidth: .infinity, alignment: .trailing)
                                     }
@@ -572,6 +569,7 @@ struct SlidingCardView: View {
                                                 Text(station.name)
                                                     .font(.system(size: 14, weight: .bold))
                                                     .multilineTextAlignment(.leading)
+                                                    .foregroundStyle(Color("TextColor"))
                                                 Text((station.prices[viewModel.selectedFuelType] ?? "0.000") ?? "0.000")
                                                     .font(.footnote)
                                                     .foregroundStyle(viewModel.getColorCode(gasStation: station.id))
@@ -585,10 +583,10 @@ struct SlidingCardView: View {
                                             Text(viewModel.getOpenStatus(scheduleString: station.schedule))
                                                 .font(.callout)
                                                 .multilineTextAlignment(.trailing)
-                                                .foregroundStyle(viewModel.getOpenStatus(scheduleString: station.schedule).hasPrefix("Abierto") ? .green : .red)
+                                                .foregroundStyle(viewModel.getOpenStatus(scheduleString: station.schedule).hasPrefix(NSLocalizedString("Abierto", comment: "")) ? .green : .red)
                                         }.frame(maxWidth: .infinity, alignment: .trailing)
                                     }
-                                    .contentShape(Rectangle()) // Esto hace que todo el HStack sea "clickable"
+                                    .contentShape(Rectangle()) // Making the whole HStack clickable.
                                     .background(Color.clear)
                                 }
                                 Spacer()
@@ -604,16 +602,22 @@ struct SlidingCardView: View {
                             }
                         }
                     }
+                    
+                    Text(String(format: NSLocalizedString("Datos facilitados por el Ministerio para la Transición Ecológica y Reto Demográfico. \n Fecha de recuperación: %@", comment: ""), viewModel.collectionDate))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 70)
+                        .font(.footnote)
+                        .padding(.top, 10)
+                        .padding(.bottom, 20)
                 }
             }
         }
         .frame(height: 600)
         .frame(maxWidth: .infinity)
-        .background(palette.backgroundColor)
+        .background(Color("TranslucidBackgroundColor"))
         .cornerRadius(10)
         .shadow(radius: 5)
         .offset(y: viewModel.slidingCardOffset.height)
-        .gesture(dragGesture)
         .edgesIgnoringSafeArea(.bottom)
         .animation(.interactiveSpring(), value: dragState.translation)
     }
@@ -622,7 +626,14 @@ struct SlidingCardView: View {
         DragGesture()
             .onChanged { gesture in
                 withAnimation {
-                    viewModel.slidingCardOffset.height = gesture.translation.height
+                    if gesture.translation.height > 0 {
+                        //print("Actuando")
+                        viewModel.slidingCardOffset.height = gesture.translation.height
+                    } else {
+                        viewModel.slidingCardOffset.height = 0
+                    }
+                    //print("Current height: \(gesture.translation.height)")
+                    
                 }
             }
             .onEnded { drag in
@@ -681,7 +692,7 @@ struct LocationSearchView: View {
     var body: some View {
         NavigationView {
             VStack {
-                TextField("Busca ciudades, pueblos, calles...", text: $viewModel.locationSearchQuery)
+                TextField(NSLocalizedString("Busca ciudades, pueblos, calles...", comment: ""), text: $viewModel.locationSearchQuery)
                     .padding()
                     .background(.black.opacity(0.7))
                     .cornerRadius(50)
@@ -701,8 +712,8 @@ struct LocationSearchView: View {
                     
                 }
             }
-            .navigationBarTitle("Buscar ubicación personalizada", displayMode: .inline)
-            .navigationBarItems(trailing: Button("Cerrar") {
+            .navigationBarTitle(NSLocalizedString("Buscar ubicación personalizada", comment: ""), displayMode: .inline)
+            .navigationBarItems(trailing: Button(NSLocalizedString("Cerrar", comment: "")) {
                 isPresented = false
             })
         }

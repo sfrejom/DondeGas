@@ -1,0 +1,1307 @@
+{
+  "sourceLanguage" : "es",
+  "strings" : {
+    "¡Vaya! Parece que ha habido un error" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaja! Sembla que hi ha hagut un error"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oops! Seems like we ran into some trouble"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ai! Errore bat egon dela dirudi"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ai! Parece que houbo un erro"
+          }
+        }
+      }
+    },
+    "%@" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@"
+          }
+        }
+      }
+    },
+    "%@, %@" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@"
+          }
+        }
+      }
+    },
+    "A %@ km." : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A %@ km."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ km away."
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zugandik %@ km"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A %@ km."
+          }
+        }
+      }
+    },
+    "Abierto" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obert"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ireki"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aberto"
+          }
+        }
+      }
+    },
+    "Abierto 24H" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obert 24H"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open 24H"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zabalik 24 orduetan"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aberto 24H"
+          }
+        }
+      }
+    },
+    "Abierto hasta\nlas %d:%d0" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obert fins a les %1$d:%2$d0"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open until %1$d:%2$d0"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Abierto hasta\nlas %1$d:%2$d0"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$d:%2$d0ak arte zabalik"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aberto ata\nas %1$d:%2$d0"
+          }
+        }
+      }
+    },
+    "Busca ciudades, pueblos, calles..." : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca ciutats, pobles, carrers..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for cities, villages, streets..."
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilatu hiriak, herriak, kaleak..."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca cidades, vilas, rúas..."
+          }
+        }
+      }
+    },
+    "Buscando los mejores precios" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscant els millors preus"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Searching for the best prices"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prezio onenen bila"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscando os mellores prezos"
+          }
+        }
+      }
+    },
+    "Buscando los mejores precios..." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscant els millors preus..."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Looking for the best prices..."
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prezio onenen bila..."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscando os mellores prezos..."
+          }
+        }
+      }
+    },
+    "Buscar ubicación personalizada" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca ubicació personalitzada"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search custom location"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilatu kokapen pertsonalizatua"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca localización personalizada"
+          }
+        }
+      }
+    },
+    "Búsqueda" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilatu"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Busca"
+          }
+        }
+      }
+    },
+    "Cerrar" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tancar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Itxi"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pechar"
+          }
+        }
+      }
+    },
+    "Comprueba tu conexión y vuelve a intentarlo" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comprova la teva connexió i torna-ho a provar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check you internet connection and try again"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egiaztatu konexioa eta saiatu berriro"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comproba a túa conexión e téntao de novo"
+          }
+        }
+      }
+    },
+    "Datos facilitados por el Ministerio para la Transición Ecológica y Reto Demográfico. \n Fecha de recuperación: %@" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dades facilitades pel Ministeri per a la Transició Ecològica i Repte Demogràfic. Data de recuperació: %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data provided by the Ministry for the Ecological Transition and Demographic Challenge. Recovery date: %@"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trantsizio Ekologikorako eta Erronka Demografikorako Ministerioak emandako datuak. Berreskuratze data: %@"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos facilitados polo Ministerio para a Transición Ecolóxica e Reto Demográfico. Data de recuperación: %@"
+          }
+        }
+      }
+    },
+    "Día no válido" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dia no vàlid"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid weekday"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egun baliogabea"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Día non válido"
+          }
+        }
+      }
+    },
+    "Diésel" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dièsel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diesel"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diesela"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diésel"
+          }
+        }
+      }
+    },
+    "Diésel Premium" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dièsel premium"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium Diesel"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium Diesela"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diésel Premium"
+          }
+        }
+      }
+    },
+    "Domingo" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diumenge"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunday"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Igandea"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domingo"
+          }
+        }
+      }
+    },
+    "Estaciones a" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estacions a"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stations"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geltokiak"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estacións para"
+          }
+        }
+      }
+    },
+    "Estaciones cerca de %@" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estacions a prop %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stations near %@"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ inguruko geltokiak"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estacións próximas a %@"
+          }
+        }
+      }
+    },
+    "Estaciones cerca de ti" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estacions a prop teu"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stations near you"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zure inguruko geltokiak"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estacións preto de ti"
+          }
+        }
+      }
+    },
+    "Gas Licuado" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gas Liquat"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liquid gas"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gas likidoa"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gas Líquido"
+          }
+        }
+      }
+    },
+    "Gasolina 95" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gasolina 95"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "95 Gas"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "95 Gasolina"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gasolina 95"
+          }
+        }
+      }
+    },
+    "Gasolina 95 Premium" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gasolina 95 Premium"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "95 Gas Premium"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "95 Premium Gasolina"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gasolina 95 Premium"
+          }
+        }
+      }
+    },
+    "Gasolina 98" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gasolina 98"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "98 Gas"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "98 Gasolina"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gasolina 98"
+          }
+        }
+      }
+    },
+    "Hidrógeno" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidrogen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidrogen"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidrogenoa"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hidróxeno"
+          }
+        }
+      }
+    },
+    "Jueves" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dijous"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thursday"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Osteguna"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xoves"
+          }
+        }
+      }
+    },
+    "km de %@" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km de %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km from %@"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km de %@"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km de %@"
+          }
+        }
+      }
+    },
+    "km de ti" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km de tu"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km from you"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "km de ti"
+          }
+        }
+      }
+    },
+    "kms de %@" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kms de %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kms from %@"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kms de %@"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kms de %@"
+          }
+        }
+      }
+    },
+    "kms de ti" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kms de tu"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kms from you"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kms"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kms de ti"
+          }
+        }
+      }
+    },
+    "Lunes" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dilluns"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monday"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Astelehena"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luns"
+          }
+        }
+      }
+    },
+    "Martes" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dimarts"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuesday"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asteartea"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Martes"
+          }
+        }
+      }
+    },
+    "Miércoles" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dimecres"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wednesday"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asteazkena"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mércores"
+          }
+        }
+      }
+    },
+    "No se han encontrado estaciones a %d km de aquí" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No s´han trobat estacions a %d km d´aquí"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No stations found %d km around"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ez da geltokirik aurkitu hemendik %d km-ra"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non se atoparon estacións a menos de %d km de aquí"
+          }
+        }
+      }
+    },
+    "No se han encontrado estaciones a %d kms de aquí" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No s'han trobat estacions a %d km d'aquí"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No stations found %d kms around"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hemendik %d kilometrora ez da geltokirik aurkitu"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non se atoparon estacións a menos de %d km de aquí"
+          }
+        }
+      }
+    },
+    "Prueba a aumentar el radio de búsqueda en el menú de ubicación" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intenteu augmentar el radi de cerca al menú d'ubicació"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can try increasing the search radius in the location menu"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saiatu bilaketa-erradioa handitzen kokapena menuan"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tenta aumentar o raio de busca no menú de localización"
+          }
+        }
+      }
+    },
+    "Reintentar" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reintentar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saiatu berriro"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volve tentar"
+          }
+        }
+      }
+    },
+    "Ruta hasta allí" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruta fins allà"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Route there"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ibilbidea hor"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruta ata alí"
+          }
+        }
+      }
+    },
+    "Sábado" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dissabte"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saturday"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Larunbata"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sábado"
+          }
+        }
+      }
+    },
+    "Selecciona un modo de búsqueda" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecciona un mode de cerca"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pick a search mode"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hautatu bilaketa modu bat"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleccione un modo de busca"
+          }
+        }
+      }
+    },
+    "Tu ubicación" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La teva ubicació"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your location"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zure kokapena"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A túa localización"
+          }
+        }
+      }
+    },
+    "Ubicación actual" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicació actual"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Current location"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uneko kokapena"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Localización actual"
+          }
+        }
+      }
+    },
+    "Ubicación seleccionada" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubicació seleccionada"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selected location"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hautatutako kokapena"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Localización seleccionada"
+          }
+        }
+      }
+    },
+    "Viernes" : {
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Divendres"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Friday"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostirala"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Venres"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

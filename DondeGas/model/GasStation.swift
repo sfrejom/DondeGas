@@ -1,5 +1,6 @@
 import Foundation
 
+// Association between fuel types and the name each one has in the API response.
 enum FuelType: String, Codable, CaseIterable, Identifiable {
     case diesel = "Precio Gasoleo A"
     case dieselP = "Precio Gasoleo Premium"
@@ -11,6 +12,7 @@ enum FuelType: String, Codable, CaseIterable, Identifiable {
     var id: Self { return self }
 }
 
+// Structure in which the API response content is decoded into.
 struct GasStationsResponse: Decodable {
     let Fecha: String
     let ListaEESSPrecio: [GasStation]
@@ -39,7 +41,6 @@ struct GasStation: Decodable, Identifiable, Equatable {
         case municipality = "Municipio"
         case province = "Provincia"
         
-        // Claves de gasolina, temporalmente. Repensar proceso...
         case sp95 = "Precio Gasolina 95 E5"
         case sp95P = "Precio Gasolina 95 E5 Premium"
         case sp98 = "Precio Gasolina 98 E5"
@@ -66,8 +67,6 @@ struct GasStation: Decodable, Identifiable, Equatable {
                         return nil
                     }
         }
-        
-        // No incluir 'prices' aquí porque se manejará en init
     }
 
     init(from decoder: Decoder) throws {

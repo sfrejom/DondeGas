@@ -13,7 +13,8 @@ import Combine
 class DondeGasViewModel: ObservableObject {
     
     private var locationManager = LocationManager.shared
-    let palette = ColorPalette()
+    
+    private let API_ENDPOINT = "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
     
     struct GasStationLocation: Identifiable {
         let location: CLLocationCoordinate2D
@@ -42,10 +43,10 @@ class DondeGasViewModel: ObservableObject {
     private var searchCancellable: AnyCancellable?
     
     public let CARD_HEIGHT_COLLAPSED = CGFloat(425)
-    public let CARD_HEIGHT_NEUTRAL = CGFloat(180)
-    public let CARD_HEIGHT_EXPANDED = CGFloat(-75)
+    public let CARD_HEIGHT_NEUTRAL = CGFloat(250)
+    public let CARD_HEIGHT_EXPANDED = CGFloat(0)
     private var CARDSTATE_LOWER_THRESHOLD: CGFloat { CARD_HEIGHT_NEUTRAL * 1.20 }
-    private var CARDSTATE_UPPER_THRESHOLD: CGFloat { CARD_HEIGHT_EXPANDED * 0.8 }
+    private var CARDSTATE_UPPER_THRESHOLD: CGFloat { CARD_HEIGHT_NEUTRAL * 0.9}
     
     enum CardState {
         case COLLAPSED
@@ -57,8 +58,6 @@ class DondeGasViewModel: ObservableObject {
     
     init() {
         loadGasStations()
-        
-        slidingCardOffset = CGSize(width: CGFloat.zero, height: Double(CARD_HEIGHT_NEUTRAL)) // Iniciar en 180
         
         locationSearchService.onUpdate = { [weak self] results in
                     self?.searchResults = results
@@ -73,32 +72,34 @@ class DondeGasViewModel: ObservableObject {
     
     func loadGasStations() {
         isLoading = true
-        let url = URL(string: "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/")!
-
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            DispatchQueue.main.async {
-                self?.isLoading = false
-                if let data = data {
-                    do {
-                        let decodedResponse = try JSONDecoder().decode(GasStationsResponse.self, from: data)
-                        self?.allGasStations = Array(decodedResponse.ListaEESSPrecio)
-                        
-                        // Collection date management
-                        let dateElements = String(decodedResponse.Fecha).split(separator: " ")
-                        self?.collectionDate = String(dateElements.first ?? "")
-
-
-                        self?.filterGasStations()
-                    } catch {
-                        print("Decoding error: \(error)")
-                        self?.errorMessage = "Failed to decode response: \(error.localizedDescription)"
+        setCardState(height: .COLLAPSED)
+        let url = URL(string: API_ENDPOINT)!
+        DispatchQueue.global(qos: .background).async {
+            URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+                DispatchQueue.main.async {
+                    self?.isLoading = false
+                    if let data = data {
+                        do {
+                            let decodedResponse = try JSONDecoder().decode(GasStationsResponse.self, from: data)
+                            self?.allGasStations = Array(decodedResponse.ListaEESSPrecio)
+                            
+                            // Collection date management
+                            let dateElements = String(decodedResponse.Fecha).split(separator: " ")
+                            self?.collectionDate = String(dateElements.first ?? "")
+                            
+                            
+                            self?.filterGasStations()
+                        } catch {
+                            print("Decoding error: \(error)")
+                            self?.errorMessage = "Failed to decode response: \(error.localizedDescription)"
+                        }
+                    } else if let error = error {
+                        print("Network error: \(error)")
+                        self?.errorMessage = "Failed to load data: \(error.localizedDescription)"
                     }
-                } else if let error = error {
-                    print("Network error: \(error)")
-                    self?.errorMessage = "Failed to load data: \(error.localizedDescription)"
                 }
-            }
-        }.resume()
+            }.resume()
+        }
         
     }
     
@@ -114,6 +115,7 @@ class DondeGasViewModel: ObservableObject {
         gasStations.sort { Double(($0.prices[selectedFuelType] ?? "") ?? "") ?? Double.infinity < Double(($1.prices[selectedFuelType] ?? "") ?? "") ?? Double.infinity }
         
         // Showing the results in the map
+        setCardState(height: .NEUTRAL)
         self.loadStationsLocations()
     }
     
@@ -145,16 +147,18 @@ class DondeGasViewModel: ObservableObject {
     }
     
     func setCardState(height: CardState) {
-        switch height {
-        case .COLLAPSED:
-            latestCardState = .COLLAPSED
-            slidingCardOffset.height = CARD_HEIGHT_COLLAPSED
-        case .NEUTRAL:
-            latestCardState = .NEUTRAL
-            slidingCardOffset.height = CARD_HEIGHT_NEUTRAL
-        case .EXPANDED:
-            latestCardState = .EXPANDED
-            slidingCardOffset.height = CARD_HEIGHT_EXPANDED
+        withAnimation {
+            switch height {
+            case .COLLAPSED:
+                latestCardState = .COLLAPSED
+                slidingCardOffset.height = CARD_HEIGHT_COLLAPSED
+            case .NEUTRAL:
+                latestCardState = .NEUTRAL
+                slidingCardOffset.height = CARD_HEIGHT_NEUTRAL
+            case .EXPANDED:
+                latestCardState = .EXPANDED
+                slidingCardOffset.height = CARD_HEIGHT_EXPANDED
+            }
         }
     }
     
@@ -162,8 +166,6 @@ class DondeGasViewModel: ObservableObject {
         switch movement.height {
         case _ where movement.height < CARDSTATE_UPPER_THRESHOLD:
             setCardState(height: .EXPANDED)
-        case _ where movement.height > CARDSTATE_LOWER_THRESHOLD:
-            setCardState(height: .COLLAPSED)
         default:
             setCardState(height: .NEUTRAL)
         }
@@ -172,61 +174,63 @@ class DondeGasViewModel: ObservableObject {
     func fuelTypeToCommercialName(fuelType: FuelType) -> String {
         switch fuelType {
         case .diesel:
-            return "Diésel"
+            return NSLocalizedString("Diésel", comment: "")
         case .dieselP:
-            return "Diésel Premium"
+            return NSLocalizedString("Diésel Premium", comment: "")
         case .sp95:
-            return "Gasolina 95"
+            return NSLocalizedString("Gasolina 95", comment: "")
         case .sp95P:
-            return "Gasolina 95 Premium"
+            return NSLocalizedString("Gasolina 95 Premium", comment: "")
         case .sp98:
-            return "Gasolina 98"
+            return NSLocalizedString("Gasolina 98", comment: "")
         case .glp:
-            return "Gas licuado"
+            return NSLocalizedString("Gas Licuado", comment: "")
         case .hidrogen:
-            return "Hidrógeno"
+            return NSLocalizedString("Hidrógeno", comment: "")
         }
     }
-    
+
     func weekdayFromLetter(dayLetter: String) -> String {
         switch dayLetter {
-            case "L":
-                return "Lunes"
-            case "M":
-                return "Martes"
-            case "X":
-                return "Miércoles"
-            case "J":
-                return "Jueves"
-            case "V":
-                return "Viernes"
-            case "S":
-                return "Sábado"
-            case "D":
-                return "Domingo"
-            case "":
-                return ""
-            default:
-                return "Día no válido"
+        case "L":
+            return NSLocalizedString("Lunes", comment: "")
+        case "M":
+            return NSLocalizedString("Martes", comment: "")
+        case "X":
+            return NSLocalizedString("Miércoles", comment: "")
+        case "J":
+            return NSLocalizedString("Jueves", comment: "")
+        case "V":
+            return NSLocalizedString("Viernes", comment: "")
+        case "S":
+            return NSLocalizedString("Sábado", comment: "")
+        case "D":
+            return NSLocalizedString("Domingo", comment: "")
+        case "":
+            return ""
+        default:
+            return NSLocalizedString("Día no válido", comment: "")
         }
     }
+
+
     
     func getFuelTypeColor(fuelType: FuelType) -> Color {
         switch fuelType {
         case .sp95:
-            return palette.mango
+            return Color("Mango")
         case .sp95P:
-            return palette.tangerine
+            return Color("Tangerine")
         case .sp98:
-            return palette.sunburst
+            return Color("Sunburst")
         case .diesel:
-            return palette.sand
+            return Color("Sand")
         case .dieselP:
-            return palette.hotSand
+            return Color("HotSand")
         case .glp:
-            return palette.softGreen
+            return Color("SofterGreen")
         case .hidrogen:
-            return palette.greenishBlue
+            return Color("GreenishBlue")
         }
     }
     
@@ -342,9 +346,9 @@ class DondeGasViewModel: ObservableObject {
                 for sched in period.scheds {
                     if sched.contains(currentTimeInMinutes) {
                         if sched.lowerBound == 0 && sched.upperBound == 24*60 {
-                            return "Abierto 24H"
+                            return NSLocalizedString("Abierto 24H", comment: "")
                         } else {
-                            return "Abierto hasta \n las \(String(sched.upperBound / 60)):\(String(sched.upperBound % 60))0"
+                            return String(format: NSLocalizedString("Abierto hasta\nlas %d:%d0", comment: ""), sched.upperBound / 60, sched.upperBound % 60)
                         }
                     }
                 }

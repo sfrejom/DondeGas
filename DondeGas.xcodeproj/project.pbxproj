@@ -10,12 +10,11 @@
 		9D802A792B2B692C00920DDB /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D802A782B2B692C00920DDB /* LocationSearchService.swift */; };
 		9D9673612B1DCBE200DF3CE9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */; };
 		9DB76FB82B0768FF00605B57 /* DondeGasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FB72B0768FF00605B57 /* DondeGasApp.swift */; };
-		9DB76FBC2B0768FF00605B57 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FBB2B0768FF00605B57 /* Item.swift */; };
 		9DB76FBE2B07690100605B57 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DB76FBD2B07690100605B57 /* Assets.xcassets */; };
 		9DB76FC12B07690100605B57 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9DB76FC02B07690100605B57 /* Preview Assets.xcassets */; };
 		9DB76FCB2B076DA500605B57 /* DondeGasViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FCA2B076DA500605B57 /* DondeGasViewModel.swift */; };
 		9DB76FCD2B07729E00605B57 /* GasStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FCC2B07729E00605B57 /* GasStation.swift */; };
-		9DEF01752B160527009B4D71 /* ColorPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DEF01742B160527009B4D71 /* ColorPalette.swift */; };
+		9DDBA77E2B3DAFE4003BC682 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 9DDBA77D2B3DAFE4003BC682 /* Localizable.xcstrings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,12 +22,12 @@
 		9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9DB76FB42B0768FF00605B57 /* DondeGas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DondeGas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DB76FB72B0768FF00605B57 /* DondeGasApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DondeGasApp.swift; sourceTree = "<group>"; };
-		9DB76FBB2B0768FF00605B57 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		9DB76FBD2B07690100605B57 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9DB76FC02B07690100605B57 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9DB76FCA2B076DA500605B57 /* DondeGasViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DondeGasViewModel.swift; sourceTree = "<group>"; };
 		9DB76FCC2B07729E00605B57 /* GasStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasStation.swift; sourceTree = "<group>"; };
-		9DEF01742B160527009B4D71 /* ColorPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPalette.swift; sourceTree = "<group>"; };
+		9DDBA77D2B3DAFE4003BC682 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		9DDF8DC22B3B612400B7F913 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +44,7 @@
 		9DB76FAB2B0768FF00605B57 = {
 			isa = PBXGroup;
 			children = (
+				9DDBA77D2B3DAFE4003BC682 /* Localizable.xcstrings */,
 				9DB76FB62B0768FF00605B57 /* DondeGas */,
 				9DB76FB52B0768FF00605B57 /* Products */,
 			);
@@ -61,14 +61,13 @@
 		9DB76FB62B0768FF00605B57 /* DondeGas */ = {
 			isa = PBXGroup;
 			children = (
+				9DDF8DC22B3B612400B7F913 /* Info.plist */,
 				9DB76FC92B076D0F00605B57 /* viewmodel */,
 				9DB76FC82B076D0800605B57 /* view */,
 				9DB76FC72B076CFD00605B57 /* model */,
 				9DB76FB72B0768FF00605B57 /* DondeGasApp.swift */,
-				9DB76FBB2B0768FF00605B57 /* Item.swift */,
 				9DB76FBD2B07690100605B57 /* Assets.xcassets */,
 				9DB76FBF2B07690100605B57 /* Preview Content */,
-				9DEF01742B160527009B4D71 /* ColorPalette.swift */,
 				9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */,
 				9D802A782B2B692C00920DDB /* LocationSearchService.swift */,
 			);
@@ -143,11 +142,15 @@
 			};
 			buildConfigurationList = 9DB76FAF2B0768FF00605B57 /* Build configuration list for PBXProject "DondeGas" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = es;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				es,
 				Base,
+				ca,
+				gl,
+				"eu-ES",
 			);
 			mainGroup = 9DB76FAB2B0768FF00605B57;
 			productRefGroup = 9DB76FB52B0768FF00605B57 /* Products */;
@@ -166,6 +169,7 @@
 			files = (
 				9DB76FC12B07690100605B57 /* Preview Assets.xcassets in Resources */,
 				9DB76FBE2B07690100605B57 /* Assets.xcassets in Resources */,
+				9DDBA77E2B3DAFE4003BC682 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,8 +181,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D802A792B2B692C00920DDB /* LocationSearchService.swift in Sources */,
-				9DEF01752B160527009B4D71 /* ColorPalette.swift in Sources */,
-				9DB76FBC2B0768FF00605B57 /* Item.swift in Sources */,
 				9D9673612B1DCBE200DF3CE9 /* LocationManager.swift in Sources */,
 				9DB76FB82B0768FF00605B57 /* DondeGasApp.swift in Sources */,
 				9DB76FCD2B07729E00605B57 /* GasStation.swift in Sources */,
@@ -248,6 +250,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -304,6 +307,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -318,12 +322,14 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DondeGas/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DondeGas/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos tu ubicación para ofrecerte las estaciones de servicio más próximas.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -347,12 +353,14 @@
 				DEVELOPMENT_ASSET_PATHS = "\"DondeGas/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DondeGas/Info.plist;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos tu ubicación para ofrecerte las estaciones de servicio más próximas.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
