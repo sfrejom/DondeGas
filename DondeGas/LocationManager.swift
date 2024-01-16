@@ -18,20 +18,25 @@ final class LocationManager: NSObject, ObservableObject, MKLocalSearchCompleterD
     @Published var userLocation = MKCoordinateRegion()
     @Published var locationName: String = ""
     
+    let UserDefaults = UserDefaultsManager.shared
+    
     override init() {
         super.init()
         
-        region = MKCoordinateRegion(
-            center: .init(latitude: 40.4165, longitude: -3.70256),
-            span: .init(latitudeDelta: 0.5, longitudeDelta: 0.5)
-        )
-        /*
-        mapPosition = MapCameraPosition.region(
-            MKCoordinateRegion(
+        // The center of Madrid is defined as location in case there is no stored location and
+        // user location access is disabled
+        if UserDefaults.isUsingCustomLocation {
+            if let lastCustomLocation = UserDefaults.lastCustomLocation {
+                userLocation = lastCustomLocation
+            }
+        } else {
+            userLocation = UserDefaults.lastCustomLocation ?? MKCoordinateRegion (center: CLLocationCoordinate2D(latitude: 40.4167, longitude: -3.70325), span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+            
+            region = MKCoordinateRegion(
                 center: .init(latitude: 40.4165, longitude: -3.70256),
                 span: .init(latitudeDelta: 0.5, longitudeDelta: 0.5)
             )
-        )*/
+        }
         
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -72,7 +77,12 @@ extension LocationManager: CLLocationManagerDelegate {
                     span: .init(latitudeDelta: 0.02, longitudeDelta: 0.02)
                 )
             
-                userLocation = region
+                withAnimation {
+                    userLocation = region
+                    mapPosition = .region(region)
+                }
+            
+                UserDefaults.lastCustomLocation = userLocation
             }
 
         obtainCurrentLocationName() { placemark in
@@ -159,6 +169,8 @@ extension LocationManager: CLLocationManagerDelegate {
                     )
                     self.focusOnUser()
                 }
+                
+                self.UserDefaults.lastCustomLocation = self.userLocation
 
                 self.obtainCurrentLocationName { placemark in
                     if let cityName = placemark?.locality {

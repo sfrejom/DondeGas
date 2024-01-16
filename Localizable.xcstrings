@@ -1,6 +1,21 @@
 {
   "sourceLanguage" : "es",
   "strings" : {
+    "\n\nElige el tipo de combustible que usa tu vehículo y buscaré los mejores precios en estaciones cercanas." : {
+
+    },
+    "¡Entendido!" : {
+
+    },
+    "¡Genial, todo listo!" : {
+
+    },
+    "¡Hola!" : {
+
+    },
+    "¡Suena bien!" : {
+
+    },
     "¡Vaya! Parece que ha habido un error" : {
       "localizations" : {
         "ca" : {
@@ -28,6 +43,9 @@
           }
         }
       }
+    },
+    "¿Y qué más?" : {
+
     },
     "%@" : {
       "localizations" : {
@@ -208,6 +226,9 @@
           }
         }
       }
+    },
+    "Acepto" : {
+
     },
     "Busca ciudades, pueblos, calles..." : {
       "localizations" : {
@@ -406,7 +427,14 @@
         }
       }
     },
+    "Contacto y soporte" : {
+
+    },
+    "Datos facilitados por el Ministerio para la Transición Ecológica y Reto Demográfico. \n Actualizados el %@" : {
+
+    },
     "Datos facilitados por el Ministerio para la Transición Ecológica y Reto Demográfico. \n Fecha de recuperación: %@" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ca" : {
           "stringUnit" : {
@@ -546,6 +574,9 @@
         }
       }
     },
+    "Empecemos por revisar la política de privacidad de DondeGas. Como resumen, ningún dato tuyo abandona tu dispositivo y solo lo usaré para ayudarte en tu búsqueda 🙂" : {
+
+    },
     "Estaciones a" : {
       "localizations" : {
         "ca" : {
@@ -629,6 +660,9 @@
           }
         }
       }
+    },
+    "Este es el " : {
+
     },
     "Gas Licuado" : {
       "localizations" : {
@@ -966,6 +1000,12 @@
         }
       }
     },
+    "menú de combustible." : {
+
+    },
+    "menú de localización." : {
+
+    },
     "Miércoles" : {
       "localizations" : {
         "ca" : {
@@ -1050,6 +1090,9 @@
         }
       }
     },
+    "Política de Privacidad" : {
+
+    },
     "Prueba a aumentar el radio de búsqueda en el menú de ubicación" : {
       "localizations" : {
         "ca" : {
@@ -1077,6 +1120,9 @@
           }
         }
       }
+    },
+    "Puedo buscar estaciones en tu ubicación actual o explorar gasolineras en otras ubicaciones." : {
+
     },
     "Reintentar" : {
       "localizations" : {
@@ -1190,6 +1236,12 @@
         }
       }
     },
+    "Soy DondeGas y me dedico a buscar (y encontrar 😎) los mejores precios para repostar. ¿Quieres ahorrar en cada visita a la gasolinera?" : {
+
+    },
+    "También puedes personalizar la distancia máxima a la que buscaré estaciones de servicio." : {
+
+    },
     "Tu ubicación" : {
       "localizations" : {
         "ca" : {
@@ -1273,6 +1325,9 @@
           }
         }
       }
+    },
+    "Valora DondeGas" : {
+
     },
     "Viernes" : {
       "localizations" : {

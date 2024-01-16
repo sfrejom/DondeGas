@@ -1,6 +1,9 @@
 import SwiftUI
 import MapKit
 import CoreLocation
+import StoreKit
+
+import WebKit
 
 @main
 struct DondeGasApp: App {
@@ -24,14 +27,19 @@ struct ContentView: View {
             GasStationsMap()
             
             VStack {
+                HStack {
+                    InfoMenu()
+                    Spacer()
+                }
                 Spacer()
                 
                 // Filters
                 ZStack {
+                    //InfoView()
+                    TutorialView()
                     FuelMenuCardView()
                     LocationMenuCardView()
                 }
-                
                 // Filters menu
                 FilterButtons()
                 
@@ -52,7 +60,8 @@ struct GasStationsMap: View {
     @StateObject var locationManager = LocationManager.shared
     
     var body: some View {
-        Map {
+        Map(position: $locationManager.mapPosition) {
+            UserAnnotation()
             ForEach(viewModel.gasStationLocations, id: \.id) { station in
                 Annotation( "", coordinate: station.location, anchor: .center, content: {
                     Button(action: {
@@ -61,15 +70,8 @@ struct GasStationsMap: View {
                         Image(systemName: "fuelpump.circle.fill")
                             .foregroundColor(viewModel.getColorCode(gasStation: station.id))
                             .padding(10)
-                            //.resizable()
-                            .scaledToFit()
-                            .frame(width: viewModel.expandedItem == station.id ? 40 : 28, height: viewModel.expandedItem == station.id ? 40 : 28)
-                        /*
-                            
-                            .border(width: viewModel.expandedItem == station.id ? 20 : 0)
-                         */
                     }
-                    //VStack {}
+                    .scaleEffect(viewModel.expandedItem == station.id ? 1.8 : 1)
                 })
             }
              
@@ -82,95 +84,125 @@ struct GasStationsMap: View {
                 viewModel.hideMenus()
                 viewModel.setCardState(height: .NEUTRAL)
             }
-        }//)
+        }
     }
 }
 
-// Initially, the app won't contain any form on monetization. However, future updates
-// might implement this feature.
-/*
-struct CoffeButton: View {
+struct InfoMenu: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
+    @Environment(\.requestReview) var requestReview
+    @State private var showingMail = false
+    @State private var showingPrivacyPolicy = false
     
     var body: some View {
-        Button(action: {
-            withAnimation(.spring) {
-                if !viewModel.isCoffeeMenuVisible {
-                    viewModel.hideFilters()
+        ZStack {
+            if viewModel.isInfoMenuVisible {
+                VStack(alignment: .center) {
+                    HStack {
+                        Button(action: {
+                            withAnimation {
+                                viewModel.isInfoMenuVisible = false
+                            }
+                        }) {
+                            Image(systemName: "x.circle")
+                                .padding(.leading)
+                                .tint(Color.white)
+                                .font(.system(size: 28))
+                        }
+                        Spacer()
+                    }
+                    .onTapGesture {
+                        withAnimation {
+                            if !viewModel.isInfoMenuVisible {
+                                viewModel.hideFilters()
+                                viewModel.setCardState(height: .NEUTRAL)
+                            }
+                            
+                            viewModel.isInfoMenuVisible.toggle()
+                        }
+                    }
+                    
+                    HStack {
+                        Button("Contacto y soporte") {
+                            showingMail = true
+                        }
+                        .sheet(isPresented: $showingMail) {
+                            MailView(recipient: "dondegasapp@gmail.com", subject: "Consulta", body: "Escribe tu mensaje aquí.")
+                        }
+                    }
+                    .frame(width: 280, height: 60)
+                    .background(Color("BackgroundGray"))
+                    .foregroundStyle(Color.white)
+                    .cornerRadius(50)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    
+                   
+                    HStack {
+                        Button("Valora DondeGas") {
+                            requestReview()
+                        }
+                    }
+                    .frame(width: 280, height: 60)
+                    .background(Color("BackgroundGray"))
+                    .foregroundStyle(Color.white)
+                    .cornerRadius(50)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+                    
+                    
+                    HStack {
+                        Button("Política de Privacidad") {
+                            showingPrivacyPolicy = true
+                        }
+                        .sheet(isPresented: $showingPrivacyPolicy) {
+                            PrivacyPolicyView()
+                        }
+                    }
+                    .frame(width: 280, height: 60)
+                    .background(Color("BackgroundGray"))
+                    .foregroundStyle(Color.white)
+                    .cornerRadius(50)
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 10)
+
+                    Spacer()
+                    
+                    Text(String(format: NSLocalizedString("Datos facilitados por el Ministerio para la Transición Ecológica y Reto Demográfico. \n Actualizados el %@", comment: ""), viewModel.collectionDate))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 30)
+                        .padding(.bottom, 15)
+                        .font(.footnote)
                 }
-                
-                viewModel.isCoffeeMenuVisible.toggle()
+                .padding(.top, 20)
+            } else {
+                HStack {
+                    Image(systemName: "info")
+                        .padding()
+                        .tint(Color.white)
+                        .font(.system(size: 22))
+                }
+                .onTapGesture {
+                    withAnimation {
+                        if !viewModel.isInfoMenuVisible {
+                            viewModel.hideFilters()
+                            viewModel.setCardState(height: .NEUTRAL)
+                        }
+                        
+                        viewModel.isInfoMenuVisible.toggle()
+                    }
+                }
             }
-        }) {
-            HStack {
-                Image(systemName: "cup.and.saucer.fill")
-                    .padding()
-                    .tint(Color.white)
-                    .font(.system(size: 20))
-            }
-            .background(Color("TranslucidBackgroundColor")
-            .cornerRadius(50)
-            .frame(width: 30, height: 30)
-            
-            Spacer()
         }
-        .offset(x: 35, y: 120)
+        .shadow(radius: 5)
+        .opacity(1)
+        .transition(.scale)
+        .frame(width: viewModel.isInfoMenuVisible ? 350 : 50, height: viewModel.isInfoMenuVisible ? 420 : 50)
+        .background(viewModel.isInfoMenuVisible ? Color("DarkerTranslucidBackgroundColor") : Color("TranslucidBackgroundColor"))
+        .cornerRadius(viewModel.isInfoMenuVisible ? 10 : 50)
+        .offset(x: 22, y: viewModel.isInfoMenuVisible ? 190 : 16)
     }
 }
- 
-
- struct CoffeeView: View {
-     @EnvironmentObject var viewModel: DondeGasViewModel
-     
-     var body: some View {
-         VStack (alignment: .center) {
-             Spacer()
-             Text("¿Te gusta DondeGas?")
-                 .font(.title)
-                 .bold()
-             Text("Sin anuncios es todavía mejor ")
-                 .font(.title3)
-             
-             Text("Este desarrollador necesita más café para seguir mejorando la aplicación.\n\nSi me invitas a uno, no verás más anuncios en DondeGas.")
-                 .font(.callout)
-                 .multilineTextAlignment(.center)
-                 .padding()
-                 .padding(.horizontal, 20)
-                 .padding(.top, 20)
-             
-             
-             Spacer()
-             
-             Button(action: {
-                 // Lógica de Apple Pay para el pago
-                 viewModel.launchCoffeePayment()
-             }) {
-                 HStack {
-                     Text("Trato hecho ")
-                         .fontWeight(.heavy)
-                         .font(.system(size: 22))
-                     Image(systemName: "cup.and.saucer")
-                         .tint(Color.white)
-                         .font(.system(size: 25))
-                 }
-                 .padding()
-             }
-             .background(LinearGradient(gradient: Gradient(colors: [Color.brown, Color.black.opacity(0.8)]), startPoint: .topLeading, endPoint: .bottomTrailing))
-             .cornerRadius(25)
-             .shadow(color: .gray.opacity(0.7), radius: 8, x: -8, y: -8)
-             .shadow(color: .gray.opacity(0.5), radius: 8, x: 8, y: 8)
-             Spacer()
-         }
-         .frame(width: 350, height: 500)
-         .background(Color("TranslucidBackgroundColor")
-         .cornerRadius(10)
-         .shadow(radius: 5)
-         .offset(x: viewModel.isCoffeeMenuVisible ? 20 : -350, y: 100)
-         .opacity(viewModel.isCoffeeMenuVisible ? 1 : 0)
-     }
- }
- 
-*/
 
 struct FuelMenuCardView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
@@ -182,6 +214,7 @@ struct FuelMenuCardView: View {
                     ForEach(FuelType.allCases, id: \.self) { fuelType in
                         Button(action: {
                             viewModel.selectedFuelType = fuelType
+                            UserDefaultsManager.shared.selectedFuelType = fuelType
                             
                             withAnimation(.spring()) {
                                 viewModel.isFuelMenuVisible = false
@@ -215,10 +248,9 @@ struct FuelMenuCardView: View {
     }
 }
 
-
 struct LocationMenuCardView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
-    @State private var distance: Double = 5
+    @State private var distance: Double = Double(UserDefaultsManager.shared.userDefinedRange)
     @StateObject var locationManager = LocationManager.shared
     @State private var showingSearchSheet = false
     
@@ -234,10 +266,10 @@ struct LocationMenuCardView: View {
                 if !viewModel.usingCustomLocation {
                     locationManager.setRealUserLocation()
                 }
-                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     viewModel.filterGasStations()
                 }
+                viewModel.updateUserPreferences()
             }
             
             Spacer()
@@ -272,7 +304,7 @@ struct LocationMenuCardView: View {
                 HStack {
                     Text (NSLocalizedString("Estaciones a", comment: ""))
                         .font(.system(size: 18))
-                    Text(String(Int($distance.wrappedValue)))
+                    Text(String(Int($distance.wrappedValue) == 0 ? 5 : Int($distance.wrappedValue)))
                         .font(.system(size: 18))
                         .bold()
                         .foregroundStyle(Color.blue)
@@ -282,10 +314,12 @@ struct LocationMenuCardView: View {
                 
                 Slider(
                     value: $distance,
-                    in: 0...100,
+                    in: 5...100,
                     step: 5,
                     onEditingChanged: { editing in
                         viewModel.reachLimit = Int($distance.wrappedValue)
+                        UserDefaultsManager.shared.userDefinedRange = Int($distance.wrappedValue)
+                        
                         viewModel.filterGasStations()
                     }
                 )
@@ -310,7 +344,7 @@ struct LocationMenuCardView: View {
                 HStack {
                     Text (NSLocalizedString("Estaciones a", comment: ""))
                         .font(.system(size: 18))
-                    Text(String(Int($distance.wrappedValue)))
+                    Text(String(Int($distance.wrappedValue) == 0 ? 5 : Int($distance.wrappedValue)))
                         .font(.system(size: 18))
                         .bold()
                         .foregroundStyle(Color.blue)
@@ -320,10 +354,12 @@ struct LocationMenuCardView: View {
                 
                 Slider(
                     value: $distance,
-                    in: 0...100,
+                    in: 5...100,
                     step: 5,
                     onEditingChanged: { editing in
                         viewModel.reachLimit = Int($distance.wrappedValue)
+                        UserDefaultsManager.shared.userDefinedRange = Int($distance.wrappedValue)
+                        
                         viewModel.filterGasStations()
                     }
                 )
@@ -364,6 +400,7 @@ struct FilterButtons: View {
                         .font(.system(size:24))
                         .padding(.leading, 12)
                     Text(viewModel.fuelTypeToCommercialName(fuelType: viewModel.selectedFuelType))
+                        .multilineTextAlignment(.leading)
                 }
             }
             .clipped()
@@ -371,7 +408,6 @@ struct FilterButtons: View {
             .cornerRadius(10, corners: [.topLeft, .bottomLeft])
             .background(Color("TranslucidBackgroundColor"))
             .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
-            .multilineTextAlignment(.leading)
             
             // Location menu button
             Button(action: {
@@ -462,10 +498,11 @@ struct SlidingCardView: View {
                 HStack {
                     if viewModel.usingCustomLocation {
                         Text(String(format: NSLocalizedString("Estaciones cerca de %@", comment: ""), locationManager.locationName))
-                            .font(.system(size: 26, weight: .heavy))
+                            .font(.system(size: 24, weight: .heavy))
                             .fontDesign(.rounded)
                             .padding(.top, 10)
                             .padding(.bottom, 25)
+                            .padding(.horizontal, 15)
                             .multilineTextAlignment(.center)
                         
                     } else {
@@ -595,20 +632,17 @@ struct SlidingCardView: View {
                         .listStyle(.automatic)
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
-                        .padding(.top, -18)
+                        .frame(height: viewModel.latestCardState == .NEUTRAL ? 320 : 480)
+                        .padding(.top, viewModel.latestCardState == .NEUTRAL ? -20 : -18)
+                        .padding(.bottom, viewModel.latestCardState == .NEUTRAL ? 200 : 0)
                         .onChange(of: viewModel.expandedItem) {
                             withAnimation(.easeInOut(duration: 1.2)) {
                                 scrollView.scrollTo(viewModel.expandedItem, anchor: .top)
                             }
                         }
                     }
-                    
-                    Text(String(format: NSLocalizedString("Datos facilitados por el Ministerio para la Transición Ecológica y Reto Demográfico. \n Fecha de recuperación: %@", comment: ""), viewModel.collectionDate))
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 70)
-                        .font(.footnote)
-                        .padding(.top, 10)
-                        .padding(.bottom, 20)
+
+                    Spacer()
                 }
             }
         }
@@ -726,6 +760,309 @@ struct LocationSearchView: View {
         }
     }
 }
+
+struct TutorialView: View {
+    @EnvironmentObject var viewModel: DondeGasViewModel
+    
+    var body: some View {
+        switch viewModel.tutorialStep {
+        case 0:
+            IntroTutorialView()
+        case 1:
+            PrivacyTutorialView()
+        case 2:
+            FuelTutorialView()
+        case 3:
+            LocationTutorialView()
+        case 4:
+            LocationSecondTutorialView()
+        default:
+            IntroTutorialView()
+        }
+    }
+}
+
+struct IntroTutorialView: View {
+    @EnvironmentObject var viewModel: DondeGasViewModel
+    
+    var body: some View {
+        VStack {
+            Text("¡Hola!")
+                .font(.title)
+                .fontWeight(.heavy)
+                .fontDesign(.rounded)
+                .multilineTextAlignment(.leading)
+                .padding(.top, 30)
+            
+            Spacer()
+            Text("Soy DondeGas y me dedico a buscar (y encontrar 😎) los mejores precios para repostar. ¿Quieres ahorrar en cada visita a la gasolinera?")
+                .font(.callout)
+                .multilineTextAlignment(.leading)
+                .padding(.horizontal, 30)
+                .padding(.top, 16)
+            Spacer()
+            
+            Button(action: {
+                withAnimation {
+                    viewModel.tutorialStep += 1
+                }
+            }){
+                Text("¡Suena bien!")
+                    .bold()
+                    .tint(.white)
+                    .padding()
+            }
+            .background(.blue)
+            .cornerRadius(50, corners: .allCorners)
+            .padding(.bottom, 30)
+        }
+        .frame(width: 300, height: !viewModel.wasTutorialShown && !viewModel.isLoading ? 300 : 0)
+        .background(Color("TranslucidBackgroundColor"))
+        .cornerRadius(10)
+        .shadow(radius: 5)
+        .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+    }
+}
+
+struct PrivacyTutorialView: View {
+    @EnvironmentObject var viewModel: DondeGasViewModel
+    @State private var showingPrivacyPolicy = false
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            Text("Empecemos por revisar la política de privacidad de DondeGas. Como resumen, ningún dato tuyo abandona tu dispositivo y solo lo usaré para ayudarte en tu búsqueda 🙂")
+                .font(.callout)
+                .multilineTextAlignment(.leading)
+                .padding(.horizontal, 30)
+                .padding(.top, 16)
+            Spacer()
+            
+            Button(action: {
+                showingPrivacyPolicy = true
+            }) {
+                Spacer()
+                Text("Política de Privacidad")
+                    .bold()
+                    .tint(.white)
+                    .padding()
+                Spacer()
+            }
+            .background(
+                RoundedRectangle(cornerRadius: 50)
+                    .stroke(Color.blue, lineWidth: 2)
+            )
+            .frame(width: 240)
+            .sheet(isPresented: $showingPrivacyPolicy) {
+                PrivacyPolicyView()
+            }
+            
+            Button(action: {
+                withAnimation {
+                    viewModel.tutorialStep += 1
+                }
+            }){
+                Spacer()
+                Text("Acepto")
+                    .bold()
+                    .tint(.white)
+                    .padding()
+                Spacer()
+            }
+            .background(.blue)
+            .cornerRadius(50, corners: .allCorners)
+            .frame(width: 240)
+            
+            Spacer()
+        }
+        .frame(width: 300, height: !viewModel.wasTutorialShown && !viewModel.isLoading ? 300 : 0)
+        .background(Color("TranslucidBackgroundColor"))
+        .cornerRadius(10)
+        .shadow(radius: 5)
+        .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+    }
+}
+
+
+struct FuelTutorialView: View {
+    @EnvironmentObject var viewModel: DondeGasViewModel
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Spacer()
+                    Image(systemName: "fuelpump.fill")
+                        .font(.system(size:32))
+                        .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
+                    (Text("Este es el ")
+                    + Text("menú de combustible.")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType)))
+                    Spacer()
+                }
+                .padding(.top, 25)
+                
+                Text("\n\nElige el tipo de combustible que usa tu vehículo y buscaré los mejores precios en estaciones cercanas.")
+                    .font(.callout)
+                    .padding(.horizontal, 30)
+                    .multilineTextAlignment(.leading)
+            }
+            
+            Button(action: {
+                withAnimation {
+                    viewModel.tutorialStep += 1
+                }
+            }){
+                Text("¡Entendido!")
+                    .bold()
+                    .tint(.white)
+                    .padding()
+            }
+            .background(.blue)
+            .cornerRadius(50, corners: .allCorners)
+            .padding()
+        }
+        .frame(width: 300, height: !viewModel.wasTutorialShown && !viewModel.isLoading ? 300 : 0)
+        .background(Color("TranslucidBackgroundColor"))
+        .cornerRadius(10)
+        .shadow(radius: 5)
+        .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+    }
+}
+
+struct LocationTutorialView: View {
+    @EnvironmentObject var viewModel: DondeGasViewModel
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Spacer()
+                    Image(systemName: "location.fill")
+                        .font(.system(size:32))
+                        .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
+                    (Text("Este es el ")
+                    + Text("menú de localización.")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType)))
+                    Spacer()
+                }
+                .padding(.top, 25)
+                Spacer()
+                Text("Puedo buscar estaciones en tu ubicación actual o explorar gasolineras en otras ubicaciones.")
+                    .font(.callout)
+                    .padding(.horizontal, 30)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
+            
+            Button(action: {
+                withAnimation {
+                    viewModel.tutorialStep += 1
+                }
+            }){
+                Text("¿Y qué más?")
+                    .bold()
+                    .tint(.white)
+                    .padding()
+            }
+            .background(.blue)
+            .cornerRadius(50, corners: .allCorners)
+            .padding()
+        }
+        .frame(width: 300, height: !viewModel.wasTutorialShown && !viewModel.isLoading ? 300 : 0)
+        .background(Color("TranslucidBackgroundColor"))
+        .cornerRadius(10)
+        .shadow(radius: 5)
+        .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+    }
+}
+
+struct LocationSecondTutorialView: View {
+    @EnvironmentObject var viewModel: DondeGasViewModel
+    
+    var body: some View {
+        VStack {
+            VStack(alignment: .leading) {
+                HStack {
+                    Spacer()
+                    Image(systemName: "location.fill")
+                        .font(.system(size:32))
+                        .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType))
+                    (Text("Este es el ")
+                    + Text("menú de localización.")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(viewModel.getFuelTypeColor(fuelType: viewModel.selectedFuelType)))
+                    Spacer()
+                }
+                .padding(.top, 25)
+                Spacer()
+                Text("También puedes personalizar la distancia máxima a la que buscaré estaciones de servicio.")
+                    .font(.callout)
+                    .padding(.horizontal, 30)
+                    .multilineTextAlignment(.leading)
+                Spacer()
+            }
+            
+            Button(action: {
+                viewModel.setTutorialAsCompleted()
+            }){
+                Text("¡Genial, todo listo!")
+                    .bold()
+                    .tint(.white)
+                    .padding()
+            }
+            .background(.blue)
+            .cornerRadius(50, corners: .allCorners)
+            .padding()
+        }
+        .frame(width: 300, height: !viewModel.wasTutorialShown && !viewModel.isLoading ? 300 : 0)
+        .background(Color("TranslucidBackgroundColor"))
+        .cornerRadius(10)
+        .shadow(radius: 5)
+        .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+    }
+}
+
+struct PrivacyPolicyView: View {
+    var body: some View {
+        VStack {
+            Text("Política de Privacidad")
+                .font(.system(size: 24, weight: .heavy))
+                .fontDesign(.rounded)
+                .multilineTextAlignment(.center)
+                .padding()
+
+            WebView(htmlContent: PrivacyPolicy.htmlText)
+                .padding()
+                .edgesIgnoringSafeArea(.all)
+        }
+    }
+}
+
+struct WebView: UIViewRepresentable {
+    let htmlContent: String
+
+    func makeUIView(context: Context) -> WKWebView {
+        let webView = WKWebView()
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
+        webView.scrollView.backgroundColor = .clear
+        
+        webView.loadHTMLString(htmlContent, baseURL: nil)
+        return webView
+    }
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {}
+}
+
+
 
 
 

@@ -11,8 +11,8 @@ import SwiftUI
 import Combine
 
 class DondeGasViewModel: ObservableObject {
-    
     private var locationManager = LocationManager.shared
+    private var UserDefaults = UserDefaultsManager.shared
     
     private let API_ENDPOINT = "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
     
@@ -26,24 +26,27 @@ class DondeGasViewModel: ObservableObject {
     
     @Published var isFuelMenuVisible: Bool = false
     @Published var isLocationMenuVisible: Bool = false
+    @Published var isInfoMenuVisible: Bool = false
+    @Published var wasTutorialShown: Bool
+    @Published var tutorialStep: Int
     
     @Published var collectionDate: String = ""
     @Published var allGasStations: [GasStation] = []
     @Published var gasStations: [GasStation] = []
     @Published var gasStationLocations: [GasStationLocation] = []
-    @Published var selectedFuelType: FuelType = .sp95
+    @Published var selectedFuelType: FuelType
     @Published var expandedItem: GasStation.ID = ""
     
     @Published var mapTarget: CLLocationCoordinate2D = CLLocationCoordinate2D()
     @Published var usingCustomLocation: Bool = false
-    @Published var reachLimit: Int = 5
+    @Published var reachLimit: Int
     @Published var searchResults: [MKLocalSearchCompletion] = []
     @Published var locationSearchQuery: String = ""
     private var locationSearchService = LocationSearchService()
     private var searchCancellable: AnyCancellable?
     
     public let CARD_HEIGHT_COLLAPSED = CGFloat(425)
-    public let CARD_HEIGHT_NEUTRAL = CGFloat(250)
+    public let CARD_HEIGHT_NEUTRAL = CGFloat(240)
     public let CARD_HEIGHT_EXPANDED = CGFloat(0)
     private var CARDSTATE_LOWER_THRESHOLD: CGFloat { CARD_HEIGHT_NEUTRAL * 1.20 }
     private var CARDSTATE_UPPER_THRESHOLD: CGFloat { CARD_HEIGHT_NEUTRAL * 0.9}
@@ -57,6 +60,13 @@ class DondeGasViewModel: ObservableObject {
     @Published var slidingCardOffset = CGSize.zero
     
     init() {
+        // Initialization of preference-related variables
+        self.usingCustomLocation = UserDefaults.isUsingCustomLocation
+        self.selectedFuelType = UserDefaults.selectedFuelType ?? .sp95
+        self.reachLimit = UserDefaults.userDefinedRange == 0 ? 5 : UserDefaults.userDefinedRange
+        self.wasTutorialShown = UserDefaults.wasTutorialShown
+        self.tutorialStep = 0
+        
         loadGasStations()
         
         locationSearchService.onUpdate = { [weak self] results in
@@ -68,6 +78,18 @@ class DondeGasViewModel: ObservableObject {
                     .sink { [weak self] query in
                         self?.locationSearchService.updateSearch(text: query)
                     }
+    }
+    
+    func setTutorialAsCompleted() {
+        withAnimation {
+            self.tutorialStep = 0
+            self.wasTutorialShown = true
+            UserDefaults.wasTutorialShown = true
+        }
+    }
+    
+    func updateUserPreferences() {
+        UserDefaults.isUsingCustomLocation = usingCustomLocation
     }
     
     func loadGasStations() {
@@ -85,7 +107,9 @@ class DondeGasViewModel: ObservableObject {
                             
                             // Collection date management
                             let dateElements = String(decodedResponse.Fecha).split(separator: " ")
-                            self?.collectionDate = String(dateElements.first ?? "")
+                            let hourElements = String(dateElements[1]).split(separator: ":")
+                            let displayHour = String(" - \(hourElements[0]):\(hourElements[1])")
+                            self?.collectionDate = String(dateElements.first ?? "") + displayHour
                             
                             
                             self?.filterGasStations()
@@ -139,6 +163,7 @@ class DondeGasViewModel: ObservableObject {
     func hideMenus() {
         isFuelMenuVisible = false
         isLocationMenuVisible = false
+        isInfoMenuVisible = false
     }
     
     func hideFilters() {
@@ -348,7 +373,7 @@ class DondeGasViewModel: ObservableObject {
                         if sched.lowerBound == 0 && sched.upperBound == 24*60 {
                             return NSLocalizedString("Abierto 24H", comment: "")
                         } else {
-                            return String(format: NSLocalizedString("Abierto hasta\nlas %d:%d0", comment: ""), sched.upperBound / 60, sched.upperBound % 60)
+                            return String(format: NSLocalizedString("Abierto hasta\nlas %d:%d0", comment: ""), sched.upperBound / 60, sched.upperBound % 60 == 30 ? (sched.upperBound % 60)/10 : sched.upperBound % 60)
                         }
                     }
                 }
