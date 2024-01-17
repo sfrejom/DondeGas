@@ -106,7 +106,7 @@ struct InfoMenu: View {
                         }) {
                             Image(systemName: "x.circle")
                                 .padding(.leading)
-                                .tint(Color.white)
+                                .tint(Color("TextColor"))
                                 .font(.system(size: 28))
                         }
                         Spacer()
@@ -132,7 +132,7 @@ struct InfoMenu: View {
                     }
                     .frame(width: 280, height: 60)
                     .background(Color("BackgroundGray"))
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(Color("TextColor"))
                     .cornerRadius(50)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
@@ -145,7 +145,7 @@ struct InfoMenu: View {
                     }
                     .frame(width: 280, height: 60)
                     .background(Color("BackgroundGray"))
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(Color("TextColor"))
                     .cornerRadius(50)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
@@ -161,7 +161,7 @@ struct InfoMenu: View {
                     }
                     .frame(width: 280, height: 60)
                     .background(Color("BackgroundGray"))
-                    .foregroundStyle(Color.white)
+                    .foregroundStyle(Color("TextColor"))
                     .cornerRadius(50)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
@@ -179,7 +179,7 @@ struct InfoMenu: View {
                 HStack {
                     Image(systemName: "info")
                         .padding()
-                        .tint(Color.white)
+                        .tint(Color("TextColor"))
                         .font(.system(size: 22))
                 }
                 .onTapGesture {
@@ -240,7 +240,7 @@ struct FuelMenuCardView: View {
             .padding(.top, 18)
         }
         .frame(width: 300, height: viewModel.isFuelMenuVisible ? 300 : 0)
-        .background(Color("TranslucidBackgroundColor"))
+        .background(Color("DarkerTranslucidBackgroundColor"))
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(viewModel.isFuelMenuVisible ? 1 : 0)
@@ -730,7 +730,7 @@ struct LocationSearchView: View {
                     .padding()
                     .background(.black.opacity(0.7))
                     .cornerRadius(50)
-                    .foregroundStyle(.white)
+                    .tint(.white)
                     .padding()
                 
                 List(viewModel.searchResults, id: \.self) { result in
@@ -832,7 +832,7 @@ struct PrivacyTutorialView: View {
     var body: some View {
         VStack {
             Spacer()
-            Text("Empecemos por revisar la política de privacidad de DondeGas. Como resumen, ningún dato tuyo abandona tu dispositivo y solo lo usaré para ayudarte en tu búsqueda 🙂")
+            Text("Empecemos por revisar la política de privacidad de DondeGas. Tus datos nunca abandonan tu dispositivo y se usan solo para mostrarte resultados relevantes 🙂")
                 .font(.callout)
                 .multilineTextAlignment(.leading)
                 .padding(.horizontal, 30)
@@ -845,7 +845,7 @@ struct PrivacyTutorialView: View {
                 Spacer()
                 Text("Política de Privacidad")
                     .bold()
-                    .tint(.white)
+                    .tint(Color("TextColor"))
                     .padding()
                 Spacer()
             }
@@ -967,7 +967,7 @@ struct LocationTutorialView: View {
             }){
                 Text("¿Y qué más?")
                     .bold()
-                    .tint(.white)
+                    .tint(Color("TextColor"))
                     .padding()
             }
             .background(.blue)
@@ -1014,7 +1014,7 @@ struct LocationSecondTutorialView: View {
             }){
                 Text("¡Genial, todo listo!")
                     .bold()
-                    .tint(.white)
+                    .tint(Color("TextColor"))
                     .padding()
             }
             .background(.blue)
@@ -1031,6 +1031,9 @@ struct LocationSecondTutorialView: View {
 }
 
 struct PrivacyPolicyView: View {
+    @Environment(\.colorScheme) var colorScheme
+    let policy = PrivacyPolicy()
+
     var body: some View {
         VStack {
             Text("Política de Privacidad")
@@ -1038,8 +1041,8 @@ struct PrivacyPolicyView: View {
                 .fontDesign(.rounded)
                 .multilineTextAlignment(.center)
                 .padding()
-
-            WebView(htmlContent: PrivacyPolicy.htmlText)
+ 
+            WebView(htmlContent: colorScheme == .dark ? policy.darkHtmlText : policy.clearHtmlText)
                 .padding()
                 .edgesIgnoringSafeArea(.all)
         }

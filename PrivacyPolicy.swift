@@ -1,16 +1,33 @@
 struct PrivacyPolicy {
-    static let htmlText = """
-    <html>
-    <head>
-    <style type="text/css">
-        body { color: white; font-family: -apple-system; font-size: 26px; }
-        h1 { font-size: 40px; }
-        h2 { font-size: 36px; }
-        ul { padding-left: 20px; }
-        li { margin: 10px 0; }
-        p { text-align: justify; }
-    </style>
-    </head>
+    static let darkHeader = """
+        <html>
+        <head>
+        <style type="text/css">
+            body { color: white; font-family: -apple-system; font-size: 26px; }
+            h1 { font-size: 40px; }
+            h2 { font-size: 36px; }
+            ul { padding-left: 20px; }
+            li { margin: 10px 0; }
+            p { text-align: justify; }
+        </style>
+        </head>
+    """
+    
+    static let clearHeader = """
+        <html>
+        <head>
+        <style type="text/css">
+            body { color: black; font-family: -apple-system; font-size: 26px; }
+            h1 { font-size: 40px; }
+            h2 { font-size: 36px; }
+            ul { padding-left: 20px; }
+            li { margin: 10px 0; }
+            p { text-align: justify; }
+        </style>
+        </head>
+    """
+    
+    static let htmlBodyText = """
     <body>
         <h1>Política de Privacidad de DondeGas</h1>
         <p>Última actualización: 9 de enero de 2023</p>
@@ -64,4 +81,7 @@ struct PrivacyPolicy {
     </body>
     </html>
     """
+    
+    public var clearHtmlText: String { PrivacyPolicy.clearHeader + PrivacyPolicy.htmlBodyText }
+    public var darkHtmlText: String { PrivacyPolicy.darkHeader + PrivacyPolicy.htmlBodyText }
 }

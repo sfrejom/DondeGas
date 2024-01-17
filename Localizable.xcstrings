@@ -2,19 +2,144 @@
   "sourceLanguage" : "es",
   "strings" : {
     "\n\nElige el tipo de combustible que usa tu vehículo y buscaré los mejores precios en estaciones cercanas." : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tria el tipus de combustible que fa servir el teu vehicle i buscaré els millors preus en estacions properes."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose the type of fuel your vehicle uses and I will look for the best prices at nearby stations."
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aukeratu zure ibilgailuak erabiltzen duen erregai mota eta inguruko geltokietan bilatuko ditut prezio onenak."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolle o tipo de combustible que utiliza o teu vehículo e buscarei os mellores prezos nas estacións próximas."
+          }
+        }
+      }
     },
     "¡Entendido!" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entès!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Understood!"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulertua!"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendido!"
+          }
+        }
+      }
     },
     "¡Genial, todo listo!" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genial, tot llest!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Great, all set!"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primeran, dena prest!"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genial, todo listo!"
+          }
+        }
+      }
     },
     "¡Hola!" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hola!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Hello there!"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaixo!"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ola!"
+          }
+        }
+      }
     },
     "¡Suena bien!" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sona bé!"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Sounds good!"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ondo entzuten da!"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soa ben!"
+          }
+        }
+      }
     },
     "¡Vaya! Parece que ha habido un error" : {
       "localizations" : {
@@ -45,7 +170,32 @@
       }
     },
     "¿Y qué más?" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I què més?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿What else?"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eta zer gehiago?"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E que máis?"
+          }
+        }
+      }
     },
     "%@" : {
       "localizations" : {
@@ -228,7 +378,32 @@
       }
     },
     "Acepto" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepto"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I accept"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ados"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estou de acordo"
+          }
+        }
+      }
     },
     "Busca ciudades, pueblos, calles..." : {
       "localizations" : {
@@ -428,10 +603,60 @@
       }
     },
     "Contacto y soporte" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacte i suport"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact and support"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Harremanak eta laguntza"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacto e apoio."
+          }
+        }
+      }
     },
     "Datos facilitados por el Ministerio para la Transición Ecológica y Reto Demográfico. \n Actualizados el %@" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dades facilitades pel Ministeri per a la Transició Ecològica i Repte Demogràfic. Actualitzats %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data provided by the Ministry for the Ecological Transition and Demographic Challenge. Updated on %@"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trantsizio Ekologikorako eta Erronka Demografikorako Ministerioak emandako datuak. %@an eguneratua."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos facilitados polo Ministerio para a Transición Ecolóxica e Reto Demográfico.\n  Actualizado o %@"
+          }
+        }
+      }
     },
     "Datos facilitados por el Ministerio para la Transición Ecológica y Reto Demográfico. \n Fecha de recuperación: %@" : {
       "extractionState" : "stale",
@@ -575,6 +800,35 @@
       }
     },
     "Empecemos por revisar la política de privacidad de DondeGas. Como resumen, ningún dato tuyo abandona tu dispositivo y solo lo usaré para ayudarte en tu búsqueda 🙂" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comencem per revisar la política de privadesa de DondeGas. Com a resum, cap dada teva abandona el teu dispositiu i només el faré servir per ajudar-te en la teva cerca 🙂"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's start by reviewing the DondeGas privacy policy. In short, none of your data leaves your device and I will only use it to help you in your search 🙂"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Has gaitezen DondeGasen pribatutasun-politika berrikusten. Laburbilduz, zure datuetatik bat ere ez da zure gailutik irteten eta zure bilaketan laguntzeko soilik erabiliko dut 🙂"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comecemos revisando a política de privacidade de DondeGas. Como resumo, ningún dos teus datos sae do teu dispositivo e só os vou usar para axudarche na túa busca 🙂"
+          }
+        }
+      }
+    },
+    "Empecemos por revisar la política de privacidad de DondeGas. Tus datos nunca abandonan tu dispositivo y se usan solo para mostrarte resultados relevantes 🙂" : {
 
     },
     "Estaciones a" : {
@@ -662,7 +916,32 @@
       }
     },
     "Este es el " : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquest és el"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This is the"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hau da"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este é o"
+          }
+        }
+      }
     },
     "Gas Licuado" : {
       "localizations" : {
@@ -1001,10 +1280,60 @@
       }
     },
     "menú de combustible." : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "menú de combustible"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "fuel menu"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "erregai menua."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "menú de combustible."
+          }
+        }
+      }
     },
     "menú de localización." : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "menú de localització."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "location menu."
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kokapena menua"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "menú de localización."
+          }
+        }
+      }
     },
     "Miércoles" : {
       "localizations" : {
@@ -1091,7 +1420,32 @@
       }
     },
     "Política de Privacidad" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Política de Privadesa"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy policy"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pribatutasun-politika"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Política de Privacidade"
+          }
+        }
+      }
     },
     "Prueba a aumentar el radio de búsqueda en el menú de ubicación" : {
       "localizations" : {
@@ -1122,7 +1476,32 @@
       }
     },
     "Puedo buscar estaciones en tu ubicación actual o explorar gasolineras en otras ubicaciones." : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puc cercar estacions a la vostra ubicació actual o explorar gasolineres en altres ubicacions."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I can search for stations in your current location or explore stations in other places."
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zure uneko kokapeneko geltokiak bilatu ditzaket edo beste toki batzuetako gasolindegiak arakatu."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podo buscar estacións na túa localización actual ou explorar gasolineiras noutras localizacións."
+          }
+        }
+      }
     },
     "Reintentar" : {
       "localizations" : {
@@ -1237,10 +1616,60 @@
       }
     },
     "Soy DondeGas y me dedico a buscar (y encontrar 😎) los mejores precios para repostar. ¿Quieres ahorrar en cada visita a la gasolinera?" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sóc DondeGas i em dedico a buscar (i trobar 😎) els millors preus per repostar. Vols estalviar a cada visita a la benzinera?"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I am DondeGas and I am dedicated to searching (and finding 😎) the best prices for refueling. Do you want to save on every visit to the gas station?"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DondeGas naiz eta hornitzeko preziorik onenak bilatzen (eta 😎 bilatzera) arduratzen naiz. Gasolindegira egindako bisita guztietan aurreztu nahi al duzu?"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Son DondeGas e dedícome a buscar (e atopar 😎) os mellores prezos para repostar. Queres aforrar en cada visita á gasolineira?"
+          }
+        }
+      }
     },
     "También puedes personalizar la distancia máxima a la que buscaré estaciones de servicio." : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "També podeu personalitzar la distància màxima a la que buscaré estacions de servei."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can also customize the maximum distance at which I will search for gas stations."
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gasolindegiak bilatuko ditudan gehienezko distantzia ere pertsonaliza dezakezu."
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tamén podes personalizar a distancia máxima á que buscarei gasolineiras."
+          }
+        }
+      }
     },
     "Tu ubicación" : {
       "localizations" : {
@@ -1327,7 +1756,32 @@
       }
     },
     "Valora DondeGas" : {
-
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valora DondeGas"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rate DondeGas"
+          }
+        },
+        "eu-ES" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Baloratu DondeGas"
+          }
+        },
+        "gl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valora DondeGas"
+          }
+        }
+      }
     },
     "Viernes" : {
       "localizations" : {

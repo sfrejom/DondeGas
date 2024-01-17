@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9D513B3C2B505659003D2677 /* PrivacyPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D513B3B2B505659003D2677 /* PrivacyPolicy.swift */; };
-		9D513B3E2B505AD2003D2677 /* PrivacyWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D513B3D2B505AD2003D2677 /* PrivacyWebView.swift */; };
 		9D802A792B2B692C00920DDB /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D802A782B2B692C00920DDB /* LocationSearchService.swift */; };
 		9D9673612B1DCBE200DF3CE9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */; };
 		9DB76FB82B0768FF00605B57 /* DondeGasApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB76FB72B0768FF00605B57 /* DondeGasApp.swift */; };
@@ -23,7 +22,6 @@
 
 /* Begin PBXFileReference section */
 		9D513B3B2B505659003D2677 /* PrivacyPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicy.swift; sourceTree = "<group>"; };
-		9D513B3D2B505AD2003D2677 /* PrivacyWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyWebView.swift; sourceTree = "<group>"; };
 		9D802A782B2B692C00920DDB /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
 		9D9673602B1DCBE200DF3CE9 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		9DB76FB42B0768FF00605B57 /* DondeGas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DondeGas.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,7 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				9DB76FCA2B076DA500605B57 /* DondeGasViewModel.swift */,
-				9D513B3D2B505AD2003D2677 /* PrivacyWebView.swift */,
 				9DFFFEB92B56DFAD0095DC93 /* ContactMailView.swift */,
 			);
 			path = view;
@@ -198,7 +195,6 @@
 				9D513B3C2B505659003D2677 /* PrivacyPolicy.swift in Sources */,
 				9DB76FB82B0768FF00605B57 /* DondeGasApp.swift in Sources */,
 				9DB76FCD2B07729E00605B57 /* GasStation.swift in Sources */,
-				9D513B3E2B505AD2003D2677 /* PrivacyWebView.swift in Sources */,
 				9DB76FCB2B076DA500605B57 /* DondeGasViewModel.swift in Sources */,
 				9DFFFEBA2B56DFAD0095DC93 /* ContactMailView.swift in Sources */,
 			);
@@ -339,18 +335,19 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DondeGas/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DondeGas;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos tu ubicación para ofrecerte las estaciones de servicio más próximas.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = sfrejom.es.DondeGas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -370,18 +367,19 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DondeGas/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DondeGas;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Usamos tu ubicación para ofrecerte las estaciones de servicio más próximas.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = sfrejom.es.DondeGas;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
