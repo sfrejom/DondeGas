@@ -57,7 +57,7 @@ class DondeGasViewModel: ObservableObject {
         case EXPANDED
     }
     @Published var latestCardState: CardState = .NEUTRAL
-    @Published var slidingCardOffset = CGSize.zero
+    @Published var slidingCardOffset = CGFloat(600)
     
     init() {
         // Initialization of preference-related variables
@@ -172,28 +172,32 @@ class DondeGasViewModel: ObservableObject {
     }
     
     func setCardState(height: CardState) {
+        /*
         withAnimation {
             switch height {
             case .COLLAPSED:
                 latestCardState = .COLLAPSED
-                slidingCardOffset.height = CARD_HEIGHT_COLLAPSED
+                slidingCardOffset = CARD_HEIGHT_COLLAPSED
             case .NEUTRAL:
                 latestCardState = .NEUTRAL
-                slidingCardOffset.height = CARD_HEIGHT_NEUTRAL
+                slidingCardOffset = CARD_HEIGHT_NEUTRAL
             case .EXPANDED:
                 latestCardState = .EXPANDED
-                slidingCardOffset.height = CARD_HEIGHT_EXPANDED
+                slidingCardOffset = CARD_HEIGHT_EXPANDED
             }
         }
+         */
     }
     
     func setCardState(movement: CGSize) {
+        /*
         switch movement.height {
         case _ where movement.height < CARDSTATE_UPPER_THRESHOLD:
             setCardState(height: .EXPANDED)
         default:
             setCardState(height: .NEUTRAL)
         }
+         */
     }
     
     func fuelTypeToCommercialName(fuelType: FuelType) -> String {

@@ -8,12 +8,7 @@ final class LocationManager: NSObject, ObservableObject, MKLocalSearchCompleterD
     
     private let locationManager = CLLocationManager()
     
-    @Published var mapPosition = MapCameraPosition.region(
-        MKCoordinateRegion(
-            center: .init(latitude: 40.4165, longitude: -3.70256),
-            span: .init(latitudeDelta: 0.5, longitudeDelta: 0.5)
-        )
-    )
+    @Published var mapPosition = MapCameraPosition.automatic
     @Published var region = MKCoordinateRegion()
     @Published var userLocation = MKCoordinateRegion()
     @Published var locationName: String = ""

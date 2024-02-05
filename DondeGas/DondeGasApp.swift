@@ -31,15 +31,16 @@ struct ContentView: View {
                     InfoMenu()
                     Spacer()
                 }
-                Spacer()
+                //Spacer()
                 
                 // Filters
                 ZStack {
-                    //InfoView()
                     TutorialView()
                     FuelMenuCardView()
                     LocationMenuCardView()
                 }
+                
+                Spacer()
                 // Filters menu
                 FilterButtons()
                 
@@ -200,7 +201,7 @@ struct InfoMenu: View {
         .frame(width: viewModel.isInfoMenuVisible ? 350 : 50, height: viewModel.isInfoMenuVisible ? 420 : 50)
         .background(viewModel.isInfoMenuVisible ? Color("DarkerTranslucidBackgroundColor") : Color("TranslucidBackgroundColor"))
         .cornerRadius(viewModel.isInfoMenuVisible ? 10 : 50)
-        .offset(x: 22, y: viewModel.isInfoMenuVisible ? 190 : 16)
+        .offset(x: 22, y: viewModel.isInfoMenuVisible ? 300 : 120)
     }
 }
 
@@ -244,7 +245,7 @@ struct FuelMenuCardView: View {
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(viewModel.isFuelMenuVisible ? 1 : 0)
-        .offset(y: (viewModel.isFuelMenuVisible ? -5 : 150) + viewModel.slidingCardOffset.height)
+        .offset(y: (viewModel.isFuelMenuVisible ? -5 : 150) + viewModel.slidingCardOffset)
     }
 }
 
@@ -374,7 +375,7 @@ struct LocationMenuCardView: View {
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(viewModel.isLocationMenuVisible ? 1 : 0)
-        .offset(y: (viewModel.isLocationMenuVisible ? -5 : 150) + viewModel.slidingCardOffset.height)
+        .offset(y: (viewModel.isLocationMenuVisible ? -5 : 150) + viewModel.slidingCardOffset)
     }
 }
 
@@ -386,7 +387,7 @@ struct FilterButtons: View {
         HStack(spacing: 0) {
             // Fuel type menu button
             Button(action: {
-                withAnimation(.spring()) {
+                withAnimation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0)) {
                     if viewModel.latestCardState == .EXPANDED {
                         viewModel.setCardState(height: .NEUTRAL)
                     }
@@ -411,7 +412,7 @@ struct FilterButtons: View {
             
             // Location menu button
             Button(action: {
-                withAnimation(.spring()) {
+                withAnimation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0)) {
                     if viewModel.latestCardState == .EXPANDED {
                         viewModel.setCardState(height: .NEUTRAL)
                     }
@@ -436,37 +437,72 @@ struct FilterButtons: View {
         }
         .clipped()
         .cornerRadius(10)
-        .offset(y: viewModel.slidingCardOffset.height)
+        .offset(y: viewModel.slidingCardOffset)
     }
 }
 
 struct SlidingCardView: View {
     @EnvironmentObject var viewModel: DondeGasViewModel
-    @GestureState private var dragState = DragState.inactive
     @StateObject var locationManager = LocationManager.shared
+    @GestureState private var dragState = DragState.inactive
+    @State var position = CardPosition.bottom
     
+    enum CardPosition: CGFloat {
+        case top = 100
+        case middle = 380
+        case bottom = 600
+    }
+
+    enum DragState {
+        case inactive
+        case dragging(translation: CGSize)
+        
+        var translation: CGSize {
+            switch self {
+            case .inactive:
+                return .zero
+            case .dragging(let translation):
+                return translation
+            }
+        }
+        
+        var isDragging: Bool {
+            switch self {
+            case .inactive:
+                return false
+            case .dragging:
+                return true
+            }
+        }
+    }
     
     var body: some View {
+        
+        let drag = DragGesture()
+                    .updating($dragState) { drag, state, transaction in
+                        state = .dragging(translation: drag.translation)
+                        viewModel.slidingCardOffset = self.position.rawValue + drag.translation.height
+                    }
+                    .onEnded(onDragEnded)
+        
         VStack {
             RoundedRectangle(cornerRadius: 5)
-                .frame(width: 70, height: 5)
+                .frame(width: 40, height: 5)
                 .background(Color("TranslucidBackgroundColor"))
                 .padding(.top, 8)
                 .padding(.horizontal, 100)
                 .zIndex(1)
-                .gesture(dragGesture)
             
             if viewModel.isLoading {
                 VStack {
-                    Spacer()
                     ProgressView(NSLocalizedString("Buscando los mejores precios", comment: ""))
-                        .padding(.bottom, 50)
+                        .padding(.top, 40)
                     Spacer()
                 }
-                .padding(.bottom, 380)
+                .padding(.bottom, 200)
+                .onAppear(perform: { setCardPosition(height: .bottom) })
             } else if !viewModel.errorMessage.isEmpty {
                 VStack {
-                    Spacer()
                     Text(NSLocalizedString("¡Vaya! Parece que ha habido un error", comment: ""))
                         .padding(.bottom, 3)
                         .frame(alignment: .center)
@@ -492,9 +528,9 @@ struct SlidingCardView: View {
                     }
                     Spacer()
                 }
-                .padding(.bottom, 200)
+                .padding(.top, 40)
+                .onAppear(perform: { setCardPosition(height: .middle) })
             } else {
-                Spacer()
                 HStack {
                     if viewModel.usingCustomLocation {
                         Text(String(format: NSLocalizedString("Estaciones cerca de %@", comment: ""), locationManager.locationName))
@@ -514,7 +550,6 @@ struct SlidingCardView: View {
                     }
                     
                 }
-                Spacer()
                 
                 if viewModel.gasStations.isEmpty {
                     VStack {
@@ -535,6 +570,7 @@ struct SlidingCardView: View {
                             .padding(.top, 3)
                         Spacer()
                     }
+                    .onAppear(perform: { setCardPosition(height: .middle) })
                 } else {
                     ScrollViewReader { scrollView in
                         List(viewModel.gasStations) { station in
@@ -565,7 +601,7 @@ struct SlidingCardView: View {
                                                 .multilineTextAlignment(.leading)
                                             Spacer()
                                             Button(action: {
-                                                if let stationLatitude = Double(station.latitude), let stationLongitude = Double(station.longitude) {
+                                                if let stationLatitude = Double(station.latitude.replacingOccurrences(of: ",", with: ".")), let stationLongitude = Double(station.longitude.replacingOccurrences(of: ",", with: ".")) {
                                                     let coordinate = CLLocationCoordinate2DMake(stationLatitude, stationLongitude)
                                                     let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
                                                     mapItem.name = NSLocalizedString("Prueba a aumentar el radio de búsqueda en el menú de ubicación", comment: "")
@@ -632,70 +668,69 @@ struct SlidingCardView: View {
                         .listStyle(.automatic)
                         .scrollContentBackground(.hidden)
                         .background(Color.clear)
-                        .frame(height: viewModel.latestCardState == .NEUTRAL ? 320 : 480)
-                        .padding(.top, viewModel.latestCardState == .NEUTRAL ? -20 : -18)
-                        .padding(.bottom, viewModel.latestCardState == .NEUTRAL ? 200 : 0)
+                        .frame(height: position == CardPosition.middle ? 290 : 580)
+                        .padding(.top, 2)
                         .onChange(of: viewModel.expandedItem) {
                             withAnimation(.easeInOut(duration: 1.2)) {
                                 scrollView.scrollTo(viewModel.expandedItem, anchor: .top)
                             }
                         }
+                        .onAppear(perform: { setCardPosition(height: .middle) })
                     }
-
-                    Spacer()
+                    .padding(.top, -20)
                 }
             }
+            Spacer()
         }
-        .frame(height: 600)
+        .frame(height: UIScreen.main.bounds.height)
         .frame(maxWidth: .infinity)
         .background(Color("TranslucidBackgroundColor"))
         .cornerRadius(10)
-        .shadow(radius: 5)
-        .offset(y: viewModel.slidingCardOffset.height)
+        .shadow(color: Color(.sRGBLinear, white: 0, opacity: 0.13), radius: 10.0)
+        .offset(y: self.position.rawValue + self.dragState.translation.height)
         .edgesIgnoringSafeArea(.bottom)
-        .animation(.interactiveSpring(), value: dragState.translation)
+        .animation(self.dragState.isDragging ? nil : .interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
+        .gesture(drag)
     }
     
-    var dragGesture: some Gesture {
-        DragGesture()
-            .onChanged { gesture in
-                withAnimation {
-                    if gesture.translation.height > 0 {
-                        //print("Actuando")
-                        viewModel.slidingCardOffset.height = gesture.translation.height
-                    } else {
-                        viewModel.slidingCardOffset.height = 0
-                    }
-                    //print("Current height: \(gesture.translation.height)")
-                    
-                }
-            }
-            .onEnded { drag in
-                withAnimation {
-                    viewModel.setCardState(movement: viewModel.slidingCardOffset)
-                }
-            }
+    private func setCardPosition(height: CardPosition) {
+        withAnimation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0)) {
+            self.position = height
+            viewModel.slidingCardOffset = height.rawValue
+        }
     }
     
-    enum DragState {
-        case inactive
-        case dragging(translation: CGSize)
+    private func onDragEnded(drag: DragGesture.Value) {
+        let verticalDirection = drag.predictedEndLocation.y - drag.location.y
+        let cardTopEdgeLocation = self.position.rawValue + drag.translation.height
+        let positionAbove: CardPosition
+        let positionBelow: CardPosition
+        let closestPosition: CardPosition
         
-        var translation: CGSize {
-            switch self {
-            case .inactive:
-                return .zero
-            case .dragging(let translation):
-                return translation
-            }
+        if cardTopEdgeLocation <= CardPosition.middle.rawValue {
+            positionAbove = .top
+            positionBelow = .middle
+        } else {
+            positionAbove = .middle
+            positionBelow = .middle
         }
         
-        var isDragging: Bool {
-            switch self {
-            case .inactive:
-                return false
-            case .dragging:
-                return true
+        if (cardTopEdgeLocation - positionAbove.rawValue) < (positionBelow.rawValue - cardTopEdgeLocation) {
+            closestPosition = positionAbove
+        } else {
+            closestPosition = positionBelow
+        }
+        
+        withAnimation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0)) {
+            if verticalDirection > 0 {
+                viewModel.slidingCardOffset = positionBelow.rawValue
+                self.position = positionBelow
+            } else if verticalDirection < 0 {
+                viewModel.slidingCardOffset = positionAbove.rawValue
+                self.position = positionAbove
+            } else {
+                viewModel.slidingCardOffset = closestPosition.rawValue
+                self.position = closestPosition
             }
         }
     }
@@ -821,7 +856,7 @@ struct IntroTutorialView: View {
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
-        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset)
     }
 }
 
@@ -881,7 +916,7 @@ struct PrivacyTutorialView: View {
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
-        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset)
     }
 }
 
@@ -930,7 +965,7 @@ struct FuelTutorialView: View {
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
-        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset)
     }
 }
 
@@ -979,7 +1014,7 @@ struct LocationTutorialView: View {
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
-        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset)
     }
 }
 
@@ -1026,7 +1061,7 @@ struct LocationSecondTutorialView: View {
         .cornerRadius(10)
         .shadow(radius: 5)
         .opacity(!viewModel.wasTutorialShown && !viewModel.isLoading ? 1 : 0)
-        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset.height)
+        .offset(y: (!viewModel.wasTutorialShown && !viewModel.isLoading ? -5 : 150) + viewModel.slidingCardOffset)
     }
 }
 
